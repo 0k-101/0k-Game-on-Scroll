@@ -1,4 +1,9 @@
-.main-menu-container {
+@font-face {
+    font-family: 'alagard';
+    src: url('./assets/fonts/alagard.ttf') format('truetype');
+}
+.main-menu-container ,
+.waiting-menu-container {
     height: 100vh;
     background: url('./assets/main_menu_bg2.gif') no-repeat fixed center;
     background-size:cover;
@@ -40,6 +45,16 @@
     background-image: url('./assets/tutorial-btn_hover.png');
 }
 
+.go-back-btn{
+    font-size: 2rem !important;
+    font-family: 'alagard' !important;
+}
+.text-waiting {
+    font-size: 3rem ;
+    font-family: 'alagard' ;
+    font-weight: 400;
+    color:#ffab0f ;
+} 
 
 
 .showcase-container {
@@ -51,7 +66,6 @@
     flex-wrap: wrap;
     height: 20vh;
     width: 40%;
-    border: 2px solid white;
 }
 .showcase-container > img {
     position: absolute;

@@ -27,16 +27,14 @@ export default function WaitingRoom() {
     }, [navigate]);
     
     return (
-        <div className='d-flex flex-column gap-4 w-25 m-auto' style={{height:'100vh'}}> 
-            <h2>
-                Waiting for the other player to join... ({playerCounter}/4)
+        <div className='waiting-menu-container d-flex flex-column m-auto' style={{height:'100vh'}}> 
+            <h2 className='m-auto text-waiting'>
+                Waiting for the other player to join... 
+                ( <strong className="text-danger">{playerCounter}</strong>/4 )
             </h2>
-            <NavLink className='btn btn-danger my-auto' 
+            <NavLink className='btn btn-outline-warning go-back-btn m-auto w-25' 
                 to={'/'}
-                >Go back</NavLink>
-            <NavLink className='btn btn-secondary my-auto' 
-                to={'/game'}
-                >Go Next</NavLink>
+                >Go Back</NavLink>
         </div>
     );
 }
