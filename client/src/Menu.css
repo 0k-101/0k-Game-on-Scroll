@@ -1,0 +1,119 @@
+.main-menu-container {
+    height: 100vh;
+    background: url('./assets/main_menu_bg2.gif') no-repeat fixed center;
+    background-size:cover;
+}
+
+.start-btn {
+    height: 100px;
+    width: 200px;
+    background: url('./assets/start-btn.png') no-repeat center;
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: contain;
+}
+.start-btn:hover {
+    background-image: url('./assets/start-btn_hover.png');
+}
+
+.connect-wallet-btn {
+    height: 100px;
+    width: 200px;
+    background: url('./assets/connect-wallet.png') no-repeat center;
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: contain;
+}
+.connect-wallet-btn:hover {
+    background-image: url('./assets/connect-wallet_hover.png');
+}
+
+.tutorial-btn {
+    height: 100px;
+    width: 200px;
+    background: url('./assets/tutorial-btn.png') no-repeat center;
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: contain;
+}
+.tutorial-btn:hover {
+    background-image: url('./assets/tutorial-btn_hover.png');
+}
+
+
+
+.showcase-container {
+    position: relative;
+    top: -20%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    height: 20vh;
+    width: 40%;
+    border: 2px solid white;
+}
+.showcase-container > img {
+    position: absolute;
+    width: 90%;
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: cover;
+    transition: linear;
+    animation: cardFloat 3s infinite;
+}
+.showcase-container img:nth-child(1) {
+    bottom: 20%;
+    z-index: 0;
+}
+.showcase-container img:nth-child(2) {
+    top: 20%;
+    z-index: 3;
+}
+.showcase-container img:nth-child(3) {
+    left: -65%;
+    z-index: 2;
+}
+.showcase-container img:nth-child(4) {
+    right: -65%;
+    z-index: 1;
+}
+.showcase-container img:nth-child(5) {
+    width: 250%;
+    top: 55%;
+    z-index: 2;
+    animation: none;
+}
+
+.showcase-container img:hover {
+    animation: cardRotate 1s alternate;
+    animation-timing-function:ease-in-out;
+}
+.showcase-container img:nth-child(5) {
+    animation: none;
+}
+
+
+@keyframes cardFloat {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardRotate {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}

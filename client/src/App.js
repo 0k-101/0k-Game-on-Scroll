@@ -1,4 +1,5 @@
 import './App.css';
+import './Menu.css';
 import Home from './routes/HomeRoute';
 import Game from './routes/GameRoute';
 import NotFound from './routes/NotFoundRoute';
