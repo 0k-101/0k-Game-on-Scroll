@@ -1,0 +1,153 @@
+* {
+  user-select: none;
+}
+
+body > #root {
+  height: 100vh;
+  background-color: aquamarine;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.board-container {
+
+  margin: 0 auto;
+  width: 80%;
+  height: 220px;
+  position: relative;
+  top: 60vh;
+  padding: 5px 50px 5px 50px; /* needed check-on later */
+  border-radius: 15px;
+  background: coral url('./assets/board_bg.png') no-repeat;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap:wrap;
+  row-gap: 15px;
+  column-gap: .2%;
+  width: 100%;
+  height: 50%;
+}
+
+.card-slot {
+position: relative;
+  top: 6px;
+  width: 100%;
+  height: 90%;
+  
+  flex:0 0 6.48%; /* 6.48% = 1/15 of 97.2% , 15 tiles on each row and 14 .2% gaps */
+  display: flex;
+  
+  /* border: 2px dashed white; */
+  background-color: transparent;
+  
+}
+
+.left-pile {
+  top: -50vh;
+  right: 5vw;
+  border: 2px black dashed;
+}
+
+.opp-left-pile {
+  top: -90vh;
+  right:10vw;
+  border: 2px black dashed;
+}
+
+.mid-pile {
+  position: relative;
+  top:-75vh;
+  left: 25vw;
+}
+
+.right-pile {
+  top: -50vh;
+  left: 60vw;
+  border: 2px black dashed;
+}
+.opp-right-pile {
+  top: -90vh;
+  left: 55vw;
+  border: 2px black dashed;
+}
+
+.left-pile > .game-card,
+.mid-pile > .game-card,
+.right-pile > .game-card,
+.opp-left-pile > .game-card,
+.opp-right-pile > .game-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.game-card > img {
+  width: 100%;
+  height: 100%;
+  
+  background-color: transparent;
+  background-origin: border-box;
+  background-size: cover;
+  
+  user-select: none; /* disable text selection won't be needed probably */
+}
+
+.game-card {
+  transition: ease .5s;
+}
+
+/* Player Labels */
+
+.label-container {
+  margin-top: 10vh;
+}
+
+h3.player-label {
+  position:absolute;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  color: white;
+  text-shadow: 2px 2px 2px brown;
+}
+h3.player-label.label-turn {
+  color: yellow;
+  text-shadow: 2px 2px 2px black;
+}
+h3.player-label.label-turn::before {
+  content: "⚡";
+  color: red;
+  text-shadow: 2px 2px 2px black;
+}
+
+.label-bot {
+  top:65vh;
+  left: 50%;
+}
+.label-right {
+  top: 35vh;
+  left: 95vw;
+  writing-mode:sideways-lr;
+}
+.label-left {
+  top: 35vh;
+  writing-mode: sideways-rl;
+}
+.label-top {
+  top: 5vh;
+  left:50%;
+}
+
+.invisible {
+  visibility: hidden;
+}
+/* .card-slot::after {
+  position: absolute;
+  top: -20px;
+  color: aliceblue;
+  content: "slot";
+  font-size: .8rem;
+  display: block;
+  padding-bottom: 100%;
+} */
