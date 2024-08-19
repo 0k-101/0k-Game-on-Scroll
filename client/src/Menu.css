@@ -46,7 +46,7 @@
 }
 
 .go-back-btn{
-    font-size: 2rem !important;
+    font-size: 1.75rem !important;
     font-family: 'alagard' !important;
 }
 .text-waiting {
@@ -105,6 +105,18 @@
 }
 .showcase-container img:nth-child(5) {
     animation: none;
+}
+
+.not-found-container > img {
+    position: relative;
+    right: -35%;
+}
+
+.cat-speek {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    font-family: 'alagard';
 }
 
 
