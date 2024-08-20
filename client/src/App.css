@@ -67,7 +67,7 @@ body > #root {
   flex:0 0 6.48%; /* 6.48% = 1/15 of 97.2% , 15 tiles on each row and 14 .2% gaps */
   display: flex;
   
-  border: 2px dashed white;
+  /* border: 2px dashed white; */
   
 }
 .card-slot::before {
@@ -79,6 +79,14 @@ body > #root {
   left: -5%;
   width: 110%;
   height: 100%;
+}
+
+.left-pile::before ,
+.mid-pile::before ,
+.right-pile::before ,
+.opp-left-pile::before ,
+.opp-right-pile::before  {
+  background: none;
 }
 
 .left-pile {
@@ -120,12 +128,24 @@ body > #root {
   height: 100%;
 }
 
+.left-pile > .game-card > img,
+.mid-pile > .game-card > img,
+.right-pile > .game-card > img,
+.opp-left-pile > .game-card > img,
+.opp-right-pile > .game-card > img {
+  animation: none;
+  top:0;
+  opacity: 1;
+}
+
+
+
 .game-card > img {
   width: 100%;
   height: 100%;
   position: relative;
   top: -25px;
-  opacity: .8;
+  opacity: .85;
   
   background-color: transparent;
   background-origin: border-box;
