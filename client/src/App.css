@@ -4,9 +4,38 @@
 
 body > #root {
   height: 100vh;
+  
   background-color: transparent;
   overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.screen-blocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black ;
+  color:coral;
+  font-family: 'alagard';
+  font-size: x-large;
+  text-transform: capitalize;
+  z-index: 100;
+  visibility: hidden;
+  text-align: center;
+  align-content: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .screen-blocker {
+    visibility: visible;
+  }
+}
+@media only screen and (min-width:1001px) {
+  .screen-blocker {
+    visibility: hidden;
+  }
 }
 
 .board-container {
@@ -15,10 +44,9 @@ body > #root {
   width: 80%;
   height: 220px;
   position: relative;
-  top: 60vh;
+  top: 58vh;
   padding: 5px 50px 5px 50px; /* needed check-on later */
-  border-radius: 15px;
-  background: coral url('./assets/board_bg.png') no-repeat;
+  background: transparent;
 }
 
 .flex-container {
@@ -31,17 +59,26 @@ body > #root {
 }
 
 .card-slot {
-position: relative;
+  position: relative;
   top: 6px;
   width: 100%;
-  height: 90%;
+  height: 95%;
   
   flex:0 0 6.48%; /* 6.48% = 1/15 of 97.2% , 15 tiles on each row and 14 .2% gaps */
   display: flex;
   
-  /* border: 2px dashed white; */
-  background-color: transparent;
+  border: 2px dashed white;
   
+}
+.card-slot::before {
+  content:"";
+  background: url('./assets/game/card-slot.png') center no-repeat;
+  background-size: 100%;
+  position: absolute;
+  top: 15px;
+  left: -5%;
+  width: 110%;
+  height: 100%;
 }
 
 .left-pile {
@@ -86,11 +123,15 @@ position: relative;
 .game-card > img {
   width: 100%;
   height: 100%;
+  position: relative;
+  top: -25px;
+  opacity: .8;
   
   background-color: transparent;
   background-origin: border-box;
   background-size: cover;
   
+  animation: cardFloat 5s infinite;
   user-select: none; /* disable text selection won't be needed probably */
 }
 
@@ -122,7 +163,7 @@ h3.player-label.label-turn::before {
 }
 
 .label-bot {
-  top:65vh;
+  top:60vh;
   left: 50%;
 }
 .label-right {
@@ -142,10 +183,10 @@ h3.player-label.label-turn::before {
 .invisible {
   visibility: hidden;
 }
-/* .card-slot::after {
+ /* .card-slot::after {
   position: absolute;
   top: -20px;
-  color: aliceblue;
+  color: black;
   content: "slot";
   font-size: .8rem;
   display: block;

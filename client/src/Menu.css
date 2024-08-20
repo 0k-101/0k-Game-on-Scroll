@@ -5,44 +5,55 @@
 .main-menu-container ,
 .waiting-menu-container {
     height: 100vh;
-    background: url('./assets/main_menu_bg2.gif') no-repeat fixed center;
+    background: url('./assets/menu/main_menu_bg2.gif') no-repeat fixed center;
     background-size:cover;
+}
+.game-route-bg {
+    position: absolute;
+    height: 100vh;
+    overflow-y: hidden;
+    background-color: aquamarine;
+}
+.open-hand-btn {
+    position: absolute;
+    bottom: 15vh;
+    right: 2vw;
 }
 
 .start-btn {
     height: 100px;
     width: 200px;
-    background: url('./assets/start-btn.png') no-repeat center;
+    background: url('./assets/menu/start-btn.png') no-repeat center;
     background-color: transparent;
     background-origin: border-box;
     background-size: contain;
 }
 .start-btn:hover {
-    background-image: url('./assets/start-btn_hover.png');
+    background-image: url('./assets/menu/start-btn_hover.png');
 }
 
 .connect-wallet-btn {
     height: 100px;
     width: 200px;
-    background: url('./assets/connect-wallet.png') no-repeat center;
+    background: url('./assets/menu/connect-wallet.png') no-repeat center;
     background-color: transparent;
     background-origin: border-box;
     background-size: contain;
 }
 .connect-wallet-btn:hover {
-    background-image: url('./assets/connect-wallet_hover.png');
+    background-image: url('./assets/menu/connect-wallet_hover.png');
 }
 
 .tutorial-btn {
     height: 100px;
     width: 200px;
-    background: url('./assets/tutorial-btn.png') no-repeat center;
+    background: url('./assets/menu/tutorial-btn.png') no-repeat center;
     background-color: transparent;
     background-origin: border-box;
     background-size: contain;
 }
 .tutorial-btn:hover {
-    background-image: url('./assets/tutorial-btn_hover.png');
+    background-image: url('./assets/menu/tutorial-btn_hover.png');
 }
 
 .go-back-btn{
@@ -117,6 +128,7 @@
     top: 30%;
     left: 10%;
     font-family: 'alagard';
+    animation: colorChange 3s infinite
 }
 
 
@@ -130,6 +142,19 @@
     100% {
         transform: translateY(0);
     }
+}
+
+@keyframes colorChange {
+    0% {
+        color: black;
+    }
+    50% {
+        color: rgb(210, 1, 1);
+    }
+    100% {
+        color: black;
+    }
+    
 }
 
 @keyframes cardRotate {

@@ -7,7 +7,7 @@ export default function Home() {
     cards.push(require('../assets/cards/turuncu12.png'))
     cards.push(require('../assets/cards/mavi6.png'))
     cards.push(require('../assets/cards/pembe4.png'))
-    const diskImg = require('../assets/disk.png')
+    const diskImg = require('../assets/menu/disk.png')
     return (
         <div className='main-menu-container'> 
             <Container>

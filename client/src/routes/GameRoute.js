@@ -5,6 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { io } from 'socket.io-client';
 
 import Board from '../components/Board';
+import PerFinder from '../components/PerFinder';
 import PlayerLabels from '../components/PlayerLabels'
 import InitialHand from "../constants/InitialHand";
 
@@ -105,11 +106,15 @@ export default function Game() {
     }, [hand,navigate]) 
 
     return (
+        <div className="game-route-bg">
+
         <HandContext.Provider value={{hand, setHand, socket}}> 
 				<DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
+                    {/* <PerFinder hand={[...hand.cardSlots]} /> */}
                     <Board />
 				</DndProvider>
 		</HandContext.Provider>
+        </div>
     );
 }

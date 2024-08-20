@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 export default function NotFound() {
-    const catImg = require('../assets/angry-cat.png')
+    const catImg = require('../assets/menu/angry-cat.png')
     return (
         <div className='not-found-container d-flex flex-column gap-4 w-25 m-auto' style={{height:'100vh'}}> 
             <img src={catImg} alt="Angry Cat" className='m-auto' />
