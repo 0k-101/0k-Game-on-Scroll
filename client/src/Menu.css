@@ -13,11 +13,24 @@
     height: 100vh;
     overflow-y: hidden;
     background-color: aquamarine;
+    /* background: url('./assets/game/game-bg.png') no-repeat;
+    background-size: 1150px 580px; */
 }
+
+.zeroK-logo {
+    opacity: .90;
+    animation: pulse 5s infinite;
+}
+
 .open-hand-btn {
     position: absolute;
     bottom: 15vh;
     right: 2vw;
+}
+
+.scaleUp:hover {
+    transform: scale(1.05);
+    transition: transform .5s;
 }
 
 .start-btn {
@@ -31,17 +44,27 @@
 .start-btn:hover {
     background-image: url('./assets/menu/start-btn_hover.png');
 }
+.connected-wallet-info {
+    font-family: 'alagard';
+    color: white;
+    position: absolute;
+    top: 0px;
+    -webkit-text-stroke: #ffab0f 1px;
+}
 
 .connect-wallet-btn {
     height: 100px;
     width: 200px;
     background: url('./assets/menu/connect-wallet.png') no-repeat center;
-    background-color: transparent;
+    background-color: transparent !important;
     background-origin: border-box;
     background-size: contain;
 }
 .connect-wallet-btn:hover {
     background-image: url('./assets/menu/connect-wallet_hover.png');
+}
+.connect-wallet-btn:disabled {
+    background-image: url('./assets/menu/connect-wallet_connected.png');
 }
 
 .tutorial-btn {
@@ -168,3 +191,29 @@
         transform: rotateY(0deg);
     }
 }
+
+@keyframes logoAnimation {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: .9;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: .9;
+    }
+  }
