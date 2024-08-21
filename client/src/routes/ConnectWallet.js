@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 const ConnectWallet = () => {
     const [account, setAccount] = useState(null);
     const [network, setNetwork] = useState(null);
+
     if (account && network) {
         window.location.href = '/'; // Replace '/main-page' with the actual URL of your main page
         alert('Already Connected to MetaMask');
