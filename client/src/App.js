@@ -4,7 +4,7 @@ import Home from './routes/HomeRoute';
 import Game from './routes/GameRoute';
 import NotFound from './routes/NotFoundRoute';
 import WaitingRoom from './routes/WaitingRoomRoute';
-import ConnectWallet from './routes/ConnectWallet';
+import ConnectWallet from './routes/ConnectWalletRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes } from 'react-router-dom';
 

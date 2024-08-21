@@ -16,17 +16,17 @@ export default function Home() {
                     <Col xs={5} className='d-flex flex-column gap-4 justify-content-center'>
                         <img className='zeroK-logo' src={zeroKLogo} alt='0k Logo'></img>
                         <NavLink 
-                            className='btn start-btn m-auto w-75'
+                            className='btn start-btn m-auto w-75 border-0'
                             to={'/waiting-room'}
                         >
                         </NavLink>
                         <NavLink
-                            className='btn connect-wallet-btn m-auto w-75'
+                            className='btn connect-wallet-btn m-auto w-75 border-0'
                             to={'/connect-wallet'}
                         >
                         </NavLink>
                         <NavLink
-                            className='btn tutorial-btn m-auto w-75'
+                            className='btn tutorial-btn m-auto w-75 border-0'
                             to={'/tutorial'}
                         >
                         </NavLink>
@@ -38,7 +38,7 @@ export default function Home() {
                             <img src={cards[1]} alt="Game Card" draggable={false} />
                             <img src={cards[2]} alt="Game Card" draggable={false} />
                             <img src={cards[3]} alt="Game Card" draggable={false} />
-                            <img src={diskImg} alt="Disk" />
+                            <img src={diskImg} alt="Disk" draggable={false} />
                         </div>
                     </Col>
                 </Row>
