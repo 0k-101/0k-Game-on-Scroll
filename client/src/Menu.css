@@ -28,6 +28,11 @@
     right: 2vw;
 }
 
+.scaleUp:hover {
+    transform: scale(1.05);
+    transition: transform .5s;
+}
+
 .start-btn {
     height: 100px;
     width: 200px;
@@ -39,17 +44,27 @@
 .start-btn:hover {
     background-image: url('./assets/menu/start-btn_hover.png');
 }
+.connected-wallet-info {
+    font-family: 'alagard';
+    color: white;
+    position: absolute;
+    top: 0px;
+    -webkit-text-stroke: #ffab0f 1px;
+}
 
 .connect-wallet-btn {
     height: 100px;
     width: 200px;
     background: url('./assets/menu/connect-wallet.png') no-repeat center;
-    background-color: transparent;
+    background-color: transparent !important;
     background-origin: border-box;
     background-size: contain;
 }
 .connect-wallet-btn:hover {
     background-image: url('./assets/menu/connect-wallet_hover.png');
+}
+.connect-wallet-btn:disabled {
+    background-image: url('./assets/menu/connect-wallet_connected.png');
 }
 
 .tutorial-btn {

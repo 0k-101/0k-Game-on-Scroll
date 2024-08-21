@@ -117,6 +117,14 @@ io.of('/waiting-room').on('connection', socket => {
                 // game start!!
                 const gameRoomId = Math.floor(Math.random() * 1000);
                 const playersToSent = waitingPlayers.splice(0,4);
+                io.of('/waiting-room')
+                    .to(playersToSent[0])
+                    .to(playersToSent[1])
+                    .to(playersToSent[2])
+                    .to(playersToSent[3])
+                    .emit('await-transaction')
+                
+                    
                 io.of('/waiting-room')  
                     .to(playersToSent[0])
                     .to(playersToSent[1])

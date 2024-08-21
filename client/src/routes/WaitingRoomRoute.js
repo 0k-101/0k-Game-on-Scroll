@@ -18,6 +18,19 @@ export default function WaitingRoom() {
             navigate(`/game/${gameRoomId}`);
         })
 
+        socket.on('await-transaction', ()=> {
+
+            // if () {
+            //     socket.emit('transaction-success')
+            // } else {
+            //     // some error stuff
+
+            //     socket.emit('transaction-failed')
+            //     navigate('/');
+            // }
+
+        })
+
         return ()=> {
             socket.off('connect');
             socket.off('player-counter');
