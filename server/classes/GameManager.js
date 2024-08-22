@@ -1,3 +1,4 @@
+const Per = require('./Per.js');
 class GameManager {
 
     // Private fields
@@ -17,6 +18,13 @@ class GameManager {
             [], // 2 to 3 - discard pile
             [], // 3 to 0 - discard pile
         ];
+
+        this.tables = [
+            Array.from({length: 50}, () => 0),
+            Array.from({length: 50}, () => 0),
+            Array.from({length: 50}, () => 0),
+            Array.from({length: 50}, () => 0)
+        ]
         
         this.players = new Map();
         for (let i = 0; i < 4; i++) {
@@ -26,7 +34,7 @@ class GameManager {
                 score: 0,
             });
         }
-        
+        this.opened_hands = Array.from({length: 4}, () => false);
     }
 
     dealCards() {
