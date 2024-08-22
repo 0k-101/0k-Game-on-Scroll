@@ -230,8 +230,6 @@ const perFinder = (hand, okeyId) => {
         console.log('Per ', per)
     }
     )
-    const test = [53, 26, 106, 78]
-    checkForSameColor(test, 26)
     return ({ pers, points })
 }
 
