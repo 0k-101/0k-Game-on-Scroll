@@ -5,29 +5,39 @@
     background: url('./assets/game/game-bg.png') no-repeat ;
     background-repeat: round;
 }
-.game-table {
-    width: 100%;
-    height: 100%;
+.game-table-wrapper {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
-.card-container {
+.game-table-container {
     width: 75%;
     height: 90%;
     border: 1px solid #452312;    
     position: relative;
+    display:grid;
+    grid-template-columns: repeat(10, 1fr);
+    row-gap: .2vh;
+    column-gap: .1vw;
+    padding: 4px 10px 4px 6px;
 }
-.card-container.table-ul {
+.game-table-container.table-ul {
     left: 2%;
 }
-.card-container.table-ur {
+.game-table-container.table-ur {
     right: 14%;
 }
-.card-container.table-bl {
+.game-table-container.table-bl {
     left:14%;
 }
-.card-container.table-br {
+.game-table-container.table-br {
     right: 2%;
 }
+
+/* IN GAME */
+.table-slot {
+    position: relative;
+
+    border: 2px solid white;
+    background-color: tomato;
+} 

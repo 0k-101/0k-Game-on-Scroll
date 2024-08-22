@@ -85,9 +85,9 @@ const pointCalculator = (pers) => {
     let points = 0
     pers.forEach(hand => {
         hand.forEach(card => {
-            if (cardId === okeyId) {
+            // if (cardId === okeyId) {
 
-            }
+            // }
             let cardValue = card % 13
             if (cardValue === 0) cardValue = 13
             points += cardValue

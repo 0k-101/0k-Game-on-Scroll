@@ -5,7 +5,6 @@ export default function RightPile(props) {
     const [{}, drop] = useDrop(() => ({
         accept: CardTypes.IN_HAND,        
         drop: () => ({ slotIdx: `discard_pile_slot_idx` }),
-
     }));
     
     return (
