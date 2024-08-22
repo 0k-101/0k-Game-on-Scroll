@@ -44,7 +44,7 @@ const checkForSequence = (hand, okeyId) => {
         }
     })
     for (let i = 0; i < cards.length - 1; i++) {
-        if (cards[i].cardId === okeyId && cards[i + 1].cardId === okeyId && cards[i].isFakeOkey === false && cards[i + 1].isFakeOkey === false) {
+        if (cards[i].cardId % 52 === okeyId && cards[i + 1].cardId % 52 === okeyId && cards[i].isFakeOkey === false && cards[i + 1].isFakeOkey === false) {
             if (i === 0) {
                 cards[i].cardId = cards[i + 2].cardId - 2
                 cards[i + 1].cardId = cards[i + 2].cardId - 1
@@ -54,13 +54,13 @@ const checkForSequence = (hand, okeyId) => {
                 cards[i + 1].cardId = cards[i - 1].cardId + 2
             }
         }
-        else if (cards[i].cardId === okeyId && cards[i + 1].cardId !== okeyId && cards[i].isFakeOkey === false) {
+        else if (cards[i].cardId % 52 === okeyId && cards[i + 1].cardId % 52 !== okeyId && cards[i].isFakeOkey === false) {
             if (cards[i + 1].cardId % 13 === 1) {
                 return false
             }
             cards[i].cardId = cards[i + 1].cardId - 1
         }
-        else if (cards[i].cardId !== okeyId && cards[i + 1].cardId === okeyId && cards[i + 1].isFakeOkey === false) {
+        else if (cards[i].cardId % 52 !== okeyId && cards[i + 1].cardId % 52 === okeyId && cards[i + 1].isFakeOkey === false) {
             if (cards[i].cardId % 13 === 1) {
                 return false
             }
@@ -93,23 +93,25 @@ const checkForSequence = (hand, okeyId) => {
 
 
 const checkForSameColor = (hand, okeyId) => {
-    if (hand.length > 5 || hand.length < 3) {
+    if (hand.length > 4 || hand.length < 3) {
         return false
     }
     let cards = []
     let okeyCount = 0
     hand.forEach(card => {
+        console.log('card ', card)
         if (card === 53 || card === 106) {
             cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
         }
-        else if (card === okeyId) {
+        else if (card % 52 === okeyId) {
             okeyCount++
-            cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
+            cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), false))
         }
         else {
             cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
         }
     })
+    console.log('okey count ', okeyCount)
     let uniqueColors = []
     if (okeyCount === 0) {
         let initialValue = (cards[0].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
@@ -131,8 +133,8 @@ const checkForSameColor = (hand, okeyId) => {
         return per
     }
     else if (okeyCount === 1) {
-        let okeyIndex = cards.findIndex(card => card.isFakeOkey === true)
-        let normalCardIndex = cards.findIndex(card => card.isFakeOkey === false)
+        let okeyIndex = cards.findIndex(card => card.cardId % 52 === okeyId && card.isFakeOkey === false)
+        let normalCardIndex = cards.findIndex(card => card.cardId % 52 !== okeyId || (card.cardId % 52 === okeyId && card.isFakeOkey === true))
         let initialValue = (cards[normalCardIndex].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
         for (let i = 0; i < cards.length; i++) {
             if (i === okeyIndex) {
@@ -155,9 +157,13 @@ const checkForSameColor = (hand, okeyId) => {
         return per
     }
     else if (okeyCount === 2) {
-        let okeyIndex1 = cards.findIndex(card => card.isFakeOkey === true)
-        let okeyIndex2 = cards.findIndex(card => card.isFakeOkey === true, okeyIndex1 + 1)
-        let normalCardIndex = cards.findIndex(card => card.isFakeOkey === false)
+        console.log('cards', cards)
+        let okeyIndex1 = cards.findIndex(card => card.isFakeOkey === false && card.cardId % 52 === okeyId)
+        let okeyIndex2 = cards.findIndex(card => card.isFakeOkey === false && card.cardId % 52 === okeyId && okeyIndex1 !== cards.indexOf(card))
+        let normalCardIndex = cards.findIndex(card => card.cardId % 52 !== okeyId || (card.cardId % 52 === okeyId && card.isFakeOkey === true))
+        console.log('okey index 1 ', okeyIndex1)
+        console.log('okey index 2 ', okeyIndex2)
+        console.log('normal index ', normalCardIndex)
         let initialValue = (cards[normalCardIndex].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
         for (let i = 0; i < cards.length; i++) {
             if (i === okeyIndex1 || i === okeyIndex2) {
