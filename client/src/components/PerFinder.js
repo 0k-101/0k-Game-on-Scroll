@@ -90,7 +90,7 @@ const checkForSequence = (hand, okeyId) => {
             points += cardValue
         }
     }
-    return new Per(false, hasOkey, okeyValue, points, hand)
+    return new Per(false, hasOkey, okeyValue, points, hand, hand.length)
 }
 
 
@@ -143,7 +143,7 @@ const checkForSameColor = (hand, okeyId) => {
         else uniqueColors.push(cardColor)
     }
     points = (cardValue === 0 ? 13 : cardValue) * hand.length
-    return new Per(true, hasOkey, okeyValue, points, hand)
+    return new Per(true, hasOkey, okeyValue, points, hand, hand.length)
 }
 
 const perFinder = (hand, okeyId) => {
