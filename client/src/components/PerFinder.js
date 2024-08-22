@@ -33,18 +33,35 @@ const checkForSequence = (hand, okeyId) => {
         if (hand[i + 1] === 53 || hand[i + 1] === 106) {
             hand[i + 1] = okeyId
         }
+        if (hand[i] === okeyId && hand[i + 1] !== okeyId) {
+            hand[i] = hand[i + 1] - 1
+            hasOkey = true
+            okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
+        }
+        else if (hand[i + 1] === okeyId && hand[i] !== okeyId) {
+            hand[i + 1] = hand[i] + 1
+            hasOkey = true
+            okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
+        }
+        else if (hand[i] === okeyId && hand[i + 1] === okeyId) {
+            hasOkey = true
+
+            if (i === 0) {
+                hand[i] = hand[i + 2] - 2
+                hand[i + 1] = hand[i + 2] - 1
+                okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
+                okeyValue = (hand[i + 1] % 13 === 0 ? 13 : hand[i] % 13)
+
+            }
+            else {
+                hand[i] = hand[i - 1] + 1
+                hand[i + 1] = hand[i + 2] - 1
+                okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
+                okeyValue = (hand[i + 1] % 13 === 0 ? 13 : hand[i] % 13)
+            }
+        }
         let leftcard = hand[i] % 53
         let rightcard = hand[i + 1] % 53
-        if (leftcard === okeyId) {
-            leftcard = ((hand[i + 1]) % 53) - 1
-            hasOkey = true
-            okeyValue = Math.trunc(leftcard / 13)
-        }
-        if (rightcard === okeyId) {
-            rightcard = hand[i] + 1 % 53
-            hasOkey = true
-            okeyValue = Math.trunc(rightcard / 13)
-        }
         if (Math.trunc(leftcard / 13) === Math.trunc(rightcard / 13)) {
             if ((leftcard % 13) + 1 !== rightcard % 13) {
                 return false
