@@ -103,6 +103,7 @@ const checkForSameColor = (hand, okeyId) => {
         }
         else if (card === okeyId) {
             okeyCount++
+            cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
         }
         else {
             cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
@@ -148,6 +149,9 @@ const checkForSameColor = (hand, okeyId) => {
                 uniqueColors.push(cardColor)
             }
         }
+        console.log('initialValue ', initialValue)
+        console.log('cards.length ', cards.length)
+        console.log('cards ', cards)
         let points = initialValue * cards.length
         let per = new Per(true, cards.length, points, hand)
         return per
