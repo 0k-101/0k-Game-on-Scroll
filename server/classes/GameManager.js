@@ -74,8 +74,5 @@ class GameManager {
         this.#socket.emit('next-turn-from-server', this.whose_turn,this.discard_piles);
     }
 
-
-
-
 }
 module.exports = GameManager;
