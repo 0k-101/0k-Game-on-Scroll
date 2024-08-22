@@ -91,7 +91,7 @@ const checkForSequence = (hand, okeyId) => {
 
 
 const checkForSameColor = (hand, okeyId) => {
-    if (hand.length > 5 || hand.length < 3) {
+    if (hand.length > 4 || hand.length < 3) {
         return false
     }
     let cards = []
