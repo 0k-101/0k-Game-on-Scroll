@@ -1,0 +1,33 @@
+.game-overview-container {
+    margin: 15px 0 0 15px;
+    height: 70vh;
+    border: 2px solid #000;
+    background: url('./assets/game/game-bg.png') no-repeat ;
+    background-repeat: round;
+}
+.game-table {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.card-container {
+    width: 75%;
+    height: 90%;
+    border: 1px solid #452312;    
+    position: relative;
+}
+.card-container.table-ul {
+    left: 2%;
+}
+.card-container.table-ur {
+    right: 14%;
+}
+.card-container.table-bl {
+    left:14%;
+}
+.card-container.table-br {
+    right: 2%;
+}
