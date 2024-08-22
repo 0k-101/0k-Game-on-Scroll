@@ -8,3 +8,4 @@ class Per {
         this.perLength = perLength;
     }
 }
+export default Per;

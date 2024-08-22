@@ -8,21 +8,16 @@ const spliceHand = (hand, okeyId) => {
         if (hand[i] !== 0) {
             cleanHand.push(hand[i])
         }
-        else if (hand[i] == 0 && cleanHand.length > 2) {
-            if (cleanHand.includes(okeyId)) {
-                cleanHands.push(cleanHand)
-            }
-            else {
-                cleanHands.push(cleanHand.sort((a, b) => a - b))
-            }
+        else if (hand[i] === 0 && cleanHand.length > 2) {
+            cleanHands.push(cleanHand)
             cleanHand = []
         }
-        else if (hand[i] == 0 && cleanHand.length < 3) {
+        else if (hand[i] === 0 && cleanHand.length < 3) {
             cleanHand = []
         }
     }
     if (cleanHand.length > 2) {
-        cleanHands.push(cleanHand.sort((a, b) => a - b))
+        cleanHands.push(cleanHand)
     }
     return cleanHands
 }
@@ -64,29 +59,20 @@ const checkForSequence = (hand, okeyId) => {
         else return false
     }
     if (hasOkey) {
+        let cardValue = 0
         for (let i = 0; i < hand.length; i++) {
             if (!hand[i] === okeyId) {
-                let cardValue = hand[i] % 13
-                if (cardValue === 0) {
-                    cardValue == 13
-                }
+                cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
             }
-            else if (i === 0) {
-                let cardValue = hand[i + 1] % 13
-                if (cardValue === 0) {
-                    cardValue == 13
-                    cardValue = cardValue - 1
-                }
+            else if (hand[i] === okeyId && i === 0) {
+                cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13) - 1
             }
             points += cardValue
         }
     }
     else {
         for (let i = 0; i < hand.length; i++) {
-            let cardValue = hand[i] % 13
-            if (cardValue === 0) {
-                cardValue == 13
-            }
+            let cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
             points += cardValue
         }
     }
@@ -113,11 +99,11 @@ const checkForSameColor = (hand, okeyId) => {
     else if (hand[0] !== okeyId && hand[1] !== okeyId) {
         cardValue = hand[0] % 13
     }
-    for (let i = 0; i < hand.length - 1; i++) {
+    for (let i = 0; i < hand.length; i++) {
         if (hand[i] === 53 || hand[i] === 106) {
-            let cardColor = cardColors(Math.trunc(okeyId / 13))
+            let cardColor = cardColors[(Math.trunc(okeyId / 13))]
             let _cardValue = okeyId % 13
-            if (cardValue != _cardValue) return false
+            if (cardValue !== _cardValue) return false
             if (uniqueColors.includes(cardColor)) {
                 return false
             }
@@ -134,9 +120,9 @@ const checkForSameColor = (hand, okeyId) => {
             }
             hasOkey = true
         }
-        let cardColor = cardColors(Math.trunc(hand[i] / 13))
+        let cardColor = cardColors[(Math.trunc(hand[i] / 13))]
         let _cardValue = hand[i] % 13
-        if (cardValue != _cardValue) return false
+        if (cardValue !== _cardValue) return false
         if (uniqueColors.includes(cardColor)) {
             return false
         }
@@ -182,7 +168,11 @@ const perFinder = (hand, okeyId) => {
             }
         }
     })
-    return ({ pers })
+    pers.forEach(per => {
+        points += per.perTotalValue
+    }
+    )
+    return ({ pers, points })
 }
 export default function PerFinder({ hand }) {
     const { pers, points } = perFinder([...hand]);
