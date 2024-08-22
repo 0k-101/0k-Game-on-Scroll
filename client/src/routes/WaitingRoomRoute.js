@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import socket from "../sockets/WaitingSocket.js";
 import { NavLink, useNavigate } from 'react-router-dom';
-import e from "express";
 
 export default function WaitingRoom() {
     const [playerCounter, setPlayerCounter] = useState(0);

@@ -116,20 +116,14 @@ const perFinder = (hand, okeyId) => {
             pers.push(hand)
         }
     })
-    console.log('Possible pers', pers)
     points = pointCalculator(pers)
-    console.log('Points', points)
-    if (points < 101) {
-        return pers, 0
-    }
-    else return pers, points
+    return ({ pers , points })
 }
 export default function PerFinder({ hand }) {
-    const pers = perFinder([...hand]);
-    console.log(pers);
+    const {pers, points} = perFinder([...hand]);
     return (
         <>
-            <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {pers.length} </h2>
+            <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {pers?.length} , pts: {points} </h2>
             <Button className='btn btn-danger open-hand-btn' disabled>Open your hand!</Button>
         </>
     );
