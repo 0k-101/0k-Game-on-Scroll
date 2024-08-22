@@ -28,6 +28,12 @@
     right: 2vw;
 }
 
+.calculate-per-btn {
+    position: absolute;
+    bottom: 20vh;
+    right: 2vw;
+}
+
 .scaleUp:hover {
     transform: scale(1.05);
     transition: transform .5s;

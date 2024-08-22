@@ -39,6 +39,7 @@ class GameManager {
 
     dealCards() {
         const cards = Array.from({length: 106}, (_, i) => i + 1);
+
         for (let [idx,player] of this.players) {
             // console.log(idx);
             const playerCards = cards.splice(0, idx === this.whose_turn ? 22 : 21);

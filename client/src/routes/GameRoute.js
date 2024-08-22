@@ -111,7 +111,7 @@ export default function Game() {
             <HandContext.Provider value={{ hand, setHand, socket }}>
                 <DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
-                    <PerFinder hand={[...hand.cardSlots]} />
+                    <PerFinder />
                     <Board />
                 </DndProvider>
             </HandContext.Provider>
