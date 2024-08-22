@@ -86,7 +86,6 @@ const checkForSequence = (hand, okeyId) => {
         points += (cards[i].cardId % 13 === 0 ? 13 : cards[i].cardId % 13)
     }
     let per = new Per(false, cards.length, points, hand)
-    console.log('Solid ', per)
     return per
 }
 
@@ -149,9 +148,6 @@ const checkForSameColor = (hand, okeyId) => {
                 uniqueColors.push(cardColor)
             }
         }
-        console.log('initialValue ', initialValue)
-        console.log('cards.length ', cards.length)
-        console.log('cards ', cards)
         let points = initialValue * cards.length
         let per = new Per(true, cards.length, points, hand)
         return per
