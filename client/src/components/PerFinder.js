@@ -85,6 +85,9 @@ const pointCalculator = (pers) => {
     let points = 0
     pers.forEach(hand => {
         hand.forEach(card => {
+            if (cardId === okeyId) {
+
+            }
             let cardValue = card % 13
             if (cardValue === 0) cardValue = 13
             points += cardValue
@@ -119,10 +122,7 @@ const perFinder = (hand, okeyId) => {
     console.log('Possible pers', pers)
     points = pointCalculator(pers)
     console.log('Points', points)
-    if (points < 101) {
-        return pers, 0
-    }
-    else return pers, points
+    return pers, points
 }
 export default function PerFinder({ hand }) {
     const pers = perFinder([...hand]);
