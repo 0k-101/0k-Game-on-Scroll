@@ -1,6 +1,14 @@
 import { Button } from 'react-bootstrap'
 import Per from '../constants/Per'
 // sahte okey ile renkli per 
+
+class Card {
+    constructor(cardId, isFakeOkey) {
+        this.cardId = cardId
+        this.isFakeOkey = isFakeOkey
+    }
+}
+
 const spliceHand = (hand, okeyId) => {
     let cleanHands = []
     let cleanHand = []
@@ -23,145 +31,156 @@ const spliceHand = (hand, okeyId) => {
 }
 
 const checkForSequence = (hand, okeyId) => {
-    let hasOkey = false
-    let okeyValue = 0
+    let cards = []
     let points = 0
-    for (let i = 0; i < hand.length - 1; i++) {
-        if (hand[i] === 53 || hand[i] === 106) {
-            hand[i] = okeyId
+    hand.forEach(card => {
+        if (card === 53 || card === 106) {
+            cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
         }
-        if (hand[i + 1] === 53 || hand[i + 1] === 106) {
-            hand[i + 1] = okeyId
+        else {
+            cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
         }
-        if (hand[i] === okeyId && hand[i + 1] !== okeyId) {
-            hand[i] = hand[i + 1] - 1
-            hasOkey = true
-            okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-        }
-        else if (hand[i + 1] === okeyId && hand[i] !== okeyId) {
-            hand[i + 1] = hand[i] + 1
-            hasOkey = true
-            okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-        }
-        else if (hand[i] === okeyId && hand[i + 1] === okeyId) {
-            hasOkey = true
-
+    })
+    for (let i = 0; i < cards.length - 1; i++) {
+        if (cards[i].cardId === okeyId && cards[i + 1].cardId === okeyId && cards[i].isFakeOkey === false && cards[i + 1].isFakeOkey === false) {
             if (i === 0) {
-                hand[i] = hand[i + 2] - 2
-                hand[i + 1] = hand[i + 2] - 1
-                okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-                okeyValue = (hand[i + 1] % 13 === 0 ? 13 : hand[i] % 13)
-
+                cards[i].cardId = cards[i + 2].cardId - 2
+                cards[i + 1].cardId = cards[i + 2].cardId - 1
             }
             else {
-                hand[i] = hand[i - 1] + 1
-                hand[i + 1] = hand[i + 2] - 1
-                okeyValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-                okeyValue = (hand[i + 1] % 13 === 0 ? 13 : hand[i] % 13)
+                cards[i].cardId = cards[i - 1].cardId + 1
+                cards[i + 1].cardId = cards[i - 1].cardId + 2
             }
         }
-        let leftcard = hand[i] % 53
-        let rightcard = hand[i + 1] % 53
-        if (Math.trunc(leftcard / 13) === Math.trunc(rightcard / 13)) {
-            if ((leftcard % 13) + 1 !== rightcard % 13) {
+        else if (cards[i].cardId === okeyId && cards[i + 1].cardId !== okeyId && cards[i].isFakeOkey === false) {
+            if (cards[i + 1].cardId % 13 === 1) {
                 return false
             }
-            else if (leftcard % 13 === 0 && rightcard % 13 === 1) {
+            cards[i].cardId = cards[i + 1].cardId - 1
+        }
+        else if (cards[i].cardId !== okeyId && cards[i + 1].cardId === okeyId && cards[i + 1].isFakeOkey === false) {
+            if (cards[i].cardId % 13 === 1) {
                 return false
             }
-        }
-        else if (leftcard % 13 === 12 && rightcard % 13 === 0) {
-            continue
-        }
-        else return false
-    }
-    if (hasOkey) {
-        let cardValue = 0
-        for (let i = 0; i < hand.length; i++) {
-            if (!hand[i] === okeyId) {
-                cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-            }
-            else if (hand[i] === okeyId && i === 0) {
-                cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13) - 1
-            }
-            points += cardValue
+            cards[i + 1].cardId = cards[i].cardId + 1
         }
     }
-    else {
-        for (let i = 0; i < hand.length; i++) {
-            let cardValue = (hand[i] % 13 === 0 ? 13 : hand[i] % 13)
-            points += cardValue
+
+    for (let i = 0; i < cards.length - 1; i++) {
+        let leftCardColor = Math.trunc(cards[i].cardId / 13)
+        let rightCardColor = Math.trunc(cards[i + 1].cardId / 13)
+        if (cards[i].cardId % 13 === 0) {
+            leftCardColor = Math.trunc((cards[i].cardId - 1) / 13)
+        }
+        if (cards[i + 1].cardId % 13 === 0) {
+            rightCardColor = Math.trunc((cards[i + 1].cardId - 1) / 13)
+        }
+        if (leftCardColor !== rightCardColor) {
+            return false
+        }
+        if (cards[i].cardId !== cards[i + 1].cardId - 1) {
+            return false
         }
     }
-    return new Per(false, hasOkey, okeyValue, points, hand, hand.length)
+    for (let i = 0; i < cards.length; i++) {
+        points += (cards[i].cardId % 13 === 0 ? 13 : cards[i].cardId % 13)
+    }
+    let per = new Per(false, cards.length, points, hand)
+    console.log('Solid ', per)
+    return per
 }
 
 
 const checkForSameColor = (hand, okeyId) => {
-    let hasOkey = false
-    let okeyValue = 0
-    let points = 0
-    let cardValue = 0
-    const cardColors = ['gray', 'blue', 'pink', 'orange']
     if (hand.length > 5 || hand.length < 3) {
         return false
     }
+    let cards = []
+    let okeyCount = 0
+    hand.forEach(card => {
+        if (card === 53 || card === 106) {
+            cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
+        }
+        else if (card === okeyId) {
+            okeyCount++
+        }
+        else {
+            cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
+        }
+    })
     let uniqueColors = []
-    if (hand[0] === okeyId && hand[1] === okeyId) {
-        cardValue = hand[2] % 13
-    }
-    else if (hand[0] === okeyId && hand[1] !== okeyId) {
-        cardValue = hand[1] % 13
-    }
-    else if (hand[0] !== okeyId && hand[1] !== okeyId) {
-        cardValue = hand[0] % 13
-    }
-    for (let i = 0; i < hand.length; i++) {
-        if (hand[i] === 53 || hand[i] === 106) {
-            let cardColor = cardColors[(Math.trunc(okeyId / 13))]
-            let _cardValue = okeyId % 13
-            if (cardValue !== _cardValue) return false
+    if (okeyCount === 0) {
+        let initialValue = (cards[0].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
+        for (let i = 1; i < cards.length; i++) {
+            let cardValue = (cards[i].cardId % 13 === 0 ? 13 : cards[i].cardId % 13)
+            if (cardValue !== initialValue) {
+                return false
+            }
+            let cardColor = Math.trunc(cards[i].cardId / 13)
             if (uniqueColors.includes(cardColor)) {
                 return false
             }
-            else uniqueColors.push(cardColor)
+            else {
+                uniqueColors.push(cardColor)
+            }
         }
-        else if (hand[i] === okeyId) {
-            if (i === 0) {
-                cardValue = hand[i + 1] % 13
-                okeyValue = cardValue
+        let points = initialValue * cards.length
+        let per = new Per(true, cards.length, points, hand)
+        return per
+    }
+    else if (okeyCount === 1) {
+        let okeyIndex = cards.findIndex(card => card.isFakeOkey === true)
+        let normalCardIndex = cards.findIndex(card => card.isFakeOkey === false)
+        let initialValue = (cards[normalCardIndex].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
+        for (let i = 0; i < cards.length; i++) {
+            if (i === okeyIndex) {
+                continue
+            }
+            let cardValue = (cards[i].cardId % 13 === 0 ? 13 : cards[i].cardId % 13)
+            if (cardValue !== initialValue) {
+                return false
+            }
+            let cardColor = Math.trunc(cards[i].cardId / 13)
+            if (uniqueColors.includes(cardColor)) {
+                return false
             }
             else {
-                cardValue = hand[i - 1] % 13
-                okeyValue = cardValue
+                uniqueColors.push(cardColor)
             }
-            hasOkey = true
         }
-        let cardColor = cardColors[(Math.trunc(hand[i] / 13))]
-        let _cardValue = hand[i] % 13
-        if (cardValue !== _cardValue) return false
-        if (uniqueColors.includes(cardColor)) {
-            return false
+        let points = initialValue * cards.length
+        let per = new Per(true, cards.length, points, hand)
+        return per
+    }
+    else if (okeyCount === 2) {
+        let okeyIndex1 = cards.findIndex(card => card.isFakeOkey === true)
+        let okeyIndex2 = cards.findIndex(card => card.isFakeOkey === true, okeyIndex1 + 1)
+        let normalCardIndex = cards.findIndex(card => card.isFakeOkey === false)
+        let initialValue = (cards[normalCardIndex].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
+        for (let i = 0; i < cards.length; i++) {
+            if (i === okeyIndex1 || i === okeyIndex2) {
+                continue
+            }
+            let cardValue = (cards[i].cardId % 13 === 0 ? 13 : cards[i].cardId % 13)
+            if (cardValue !== initialValue) {
+                return false
+            }
+            let cardColor = Math.trunc(cards[i].cardId / 13)
+            if (uniqueColors.includes(cardColor)) {
+                return false
+            }
+            else {
+                uniqueColors.push(cardColor)
+            }
         }
-        else uniqueColors.push(cardColor)
+        let points = initialValue * cards.length
+        let per = new Per(true, cards.length, points, hand)
+        return per
     }
-    return true
-}
-
-const pointCalculator = (pers) => {
-    let points = 0
-    pers.forEach(hand => {
-        hand.forEach(card => {
-            // if (cardId === okeyId) {
-
-            // }
-            let cardValue = card % 13
-            if (cardValue === 0) cardValue = 13
-            points += cardValue
-        })
+    else {
+        return false
     }
-    )
-    return points
+
 }
 
 const perFinder = (hand, okeyId) => {
@@ -202,6 +221,7 @@ const perFinder = (hand, okeyId) => {
     })
     pers.forEach(per => {
         points += per.perTotalValue
+        console.log('Per ', per)
     }
     )
     return ({ pers, points })
