@@ -9,16 +9,27 @@ describe("OK_101 Contract Tests", function () {
   let addr2;
   let addr3;
   let addr4;
-  let addr5;
-
-  it("Should deploy OK_101 contract", async function () {
+  let contract
+  const contractAddress = process.env.CONTRACT_ADDRESS;
+  before(async function () {
     OK_101 = await ethers.getContractFactory("OK_101");
-    ok_101 = await OK_101.deploy();
-    await ok_101.waitForDeployment();
+    ok_101 = await OK_101.attach(contractAddress);
     [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
     console.log("Contract deployed to address:", ok_101.target);
     console.log("Owner address:", owner.address);
+    let tx = await ok_101.connect(owner).clearGame();
+    await tx.wait();
+    console.log('Game cleared');
   });
+
+  // it("Should deploy OK_101 contract", async function () {
+  //   OK_101 = await ethers.getContractFactory("OK_101");
+  //   ok_101 = await OK_101.deploy();
+  //   await ok_101.waitForDeployment();
+  //   [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+  //   console.log("Contract deployed to address:", ok_101.target);
+  //   console.log("Owner address:", owner.address);
+  // });
 
   describe("Deployment", function () {
     it("Should set the right owner", async function () {
@@ -45,47 +56,48 @@ describe("OK_101 Contract Tests", function () {
     });
 
     it("Should not allow more than 4 players to join", async function () {
-      const tx1 = await ok_101.connect(addr2).joinGame();
-      await tx1.wait();
-      console.log('players : ', await ok_101.players(1));
-      const tx2 = await ok_101.connect(addr3).joinGame();
-      await tx2.wait();
-      console.log('players : ', await ok_101.players(2));
-      const tx3 = await ok_101.connect(addr4).joinGame();
-      await tx3.wait();
-      console.log('players : ', await ok_101.players(3));
+      const tx1 = await ok_101.connect(addr2)
+      await tx1.joinGame();
+      const tx2 = await ok_101.connect(addr3)
+      await tx2.joinGame();
+      const tx3 = await ok_101.connect(addr4)
+      await tx3.joinGame();
       const tx = ok_101.connect(owner);
-      await expect(tx.joinGame()).to.be.revertedWith("Game is already full");
-
+      for (let i = 0; i < 4; i++) {
+        console.log('players : ', await ok_101.players(i));
+      }
+      expect(await tx.joinGame()).to.be.revertedWith('Game is full');
     });
   });
 
   describe("Ready/Unready", function () {
     it("Should allow a player to be ready", async function () {
-      const tx = await ok_101.connect(addr1).ready()
-      await tx.wait();
-      expect(await ok_101.readyStatus(0)).to.equal(true);
+      const tx = await ok_101.connect(addr1)
+      await tx.ready()
+      const readyStatus = await ok_101.readyStatus(0);
+      expect(readyStatus).to.equal(true);
     });
 
     it("Should allow a player to unready", async function () {
-      const tx = await ok_101.connect(addr1).unready()
-      await tx.wait();
-      expect(await ok_101.readyStatus(0)).to.be.revertedWith('Player is not ready');
+      const tx = await ok_101.connect(addr1)
+      await tx.unready()
+      const readyStatus = await ok_101.readyStatus(0);
+      expect(readyStatus).to.be.revertedWith('Player is not ready');
     });
 
     it("Should start the game when all players are ready", async function () {
-      let txReceipt = await ok_101.connect(addr1).ready()
-      await txReceipt.wait()
-      txReceipt = await ok_101.connect(addr2).ready()
-      await txReceipt.wait()
-      txReceipt = await ok_101.connect(addr3).ready()
-      await txReceipt.wait()
-      txReceipt = await ok_101.connect(addr4).ready()
-      await txReceipt.wait()
-      const tx = await ok_101.connect(owner).checkGameStart()
-      await tx.wait()
-      await expect(await ok_101.gameStarted()).to.equal(true);
-
+      let txReceipt = await ok_101.connect(addr1)
+      await txReceipt.ready()
+      txReceipt = await ok_101.connect(addr2)
+      await txReceipt.ready()
+      txReceipt = await ok_101.connect(addr3)
+      await txReceipt.ready()
+      txReceipt = await ok_101.connect(addr4)
+      await txReceipt.ready()
+      const tx = await ok_101.connect(owner)
+      await tx.startGame()
+      const gameStatus = await ok_101.gameStatus();
+      expect(gameStatus).to.equal(true);
     });
   });
 
@@ -95,15 +107,17 @@ describe("OK_101 Contract Tests", function () {
       await clear.wait();
       console.log('Game cleared');
       expect(await ok_101.playerCount()).to.equal(0);
-      const p1 = await ok_101.connect(addr1).joinGame();
-      await p1.wait();
-      const p2 = await ok_101.connect(addr2).joinGame();
-      await p2.wait();
-
-      const p3 = await ok_101.connect(addr3).joinGame();
-      await p3.wait();
-      const p4 = await ok_101.connect(addr4).joinGame();
-      await p4.wait();
+      const p1 = await ok_101.connect(addr1)
+      await p1.joinGame();
+      const p2 = await ok_101.connect(addr2)
+      await p2.joinGame();
+      const p3 = await ok_101.connect(addr3)
+      await p3.joinGame();
+      const p4 = await ok_101.connect(addr4)
+      await p4.joinGame();
+      for (let i = 0; i < 4; i++) {
+        console.log('players : ', await ok_101.players(i));
+      }
       console.log('All players joined');
     }
     );

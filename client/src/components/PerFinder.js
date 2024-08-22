@@ -8,7 +8,6 @@ const spliceHand = (hand, okeyId) => {
             cleanHand.push(hand[i])
         }
         else if (hand[i] == 0 && cleanHand.length > 2) {
-            console.log('Cleanhand', cleanHand)
             if (cleanHand.includes(okeyId)) {
                 cleanHands.push(cleanHand)
             }
@@ -28,16 +27,12 @@ const spliceHand = (hand, okeyId) => {
 }
 
 const checkForSequence = (hand, okeyId) => {
-    console.log('Hand', hand)
     for (let i = 0; i < hand.length - 1; i++) {
         if (hand[i] === 53 || hand[i] === 106) {
-            console.log('fake okey found, new hand is', hand)
             hand[i] = okeyId
         }
         if (hand[i + 1] === 53 || hand[i + 1] === 106) {
-            console.log('fake okey found')
             hand[i + 1] = okeyId
-            console.log('fake okey found, new hand is', hand)
 
         }
         let leftcard = hand[i] % 53
@@ -50,13 +45,9 @@ const checkForSequence = (hand, okeyId) => {
         }
         if (Math.trunc(leftcard / 13) === Math.trunc(rightcard / 13)) {
             if ((leftcard % 13) + 1 !== rightcard % 13) {
-                console.log('Leftcard', leftcard)
-                console.log('Rightcard', rightcard)
                 return false
             }
             else if (leftcard % 13 === 0 && rightcard % 13 === 1) {
-                console.log('Leftcard1', leftcard)
-                console.log('Rightcard1', rightcard)
                 return false
             }
         }
@@ -87,18 +78,29 @@ const checkForSameColor = (hand, okeyId) => {
         }
         else uniqueColors.push(cardColor)
     }
-    console.log('Unique colors', uniqueColors)
     return true
 }
 
+const pointCalculator = (pers) => {
+    let points = 0
+    pers.forEach(hand => {
+        hand.forEach(card => {
+            let cardValue = card % 13
+            if (cardValue === 0) cardValue = 13
+            points += cardValue
+        })
+    }
+    )
+    return points
+}
+
 const perFinder = (hand, okeyId) => {
+    let points = 0
     okeyId = 26 // mavi 13 
     let row1 = hand.splice(0, 15)
     let row2 = hand.splice(0, 15)
     let upper = spliceHand(row1, okeyId)
     let lower = spliceHand(row2, okeyId)
-    console.log('Upper', upper)
-    console.log('Lower', lower)
     let pers = []
 
     if (upper.length === 0 && lower.length === 0) {
@@ -115,7 +117,12 @@ const perFinder = (hand, okeyId) => {
         }
     })
     console.log('Possible pers', pers)
-    return pers
+    points = pointCalculator(pers)
+    console.log('Points', points)
+    if (points < 101) {
+        return pers, 0
+    }
+    else return pers, points
 }
 export default function PerFinder({ hand }) {
     const pers = perFinder([...hand]);

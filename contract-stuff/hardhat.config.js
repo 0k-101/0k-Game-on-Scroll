@@ -10,6 +10,7 @@ module.exports = {
       url: process.env.API_KEY,
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2, process.env.PRIVATE_KEY3, process.env.PRIVATE_KEY4, process.env.PRIVATE_KEY5],
       chainId: 11155111,
+      timeout: 100000
     }
   },
   chai: {
