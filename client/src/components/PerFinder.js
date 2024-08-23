@@ -1,5 +1,7 @@
 import { Button } from 'react-bootstrap'
 import Per from '../constants/Per'
+import { useState,useContext } from 'react'
+import { HandContext } from '../routes/GameRoute'
 // sahte okey ile renkli per 
 
 class Card {
@@ -232,14 +234,18 @@ const perFinder = (hand, okeyId) => {
     )
     return ({ pers, points })
 }
-
-
-export default function PerFinder({ hand }) {
-    const { pers, points } = perFinder([...hand]);
+export default function PerFinder() {
+    const [ perResult,setPerResult ] = useState( { pers:null,points:0 } )
+    const { hand } = useContext(HandContext);
+    function handleClick() {
+        setPerResult( perFinder([...hand.cardSlots]));
+        console.log(hand.isTurn);
+    }    
     return (
         <>
-            <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {pers?.length} , pts: {points} </h2>
-            <Button className='btn btn-danger open-hand-btn' disabled>Open your hand!</Button>
+            <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {perResult.pers?.length} , pts: { perResult.points } </h2>
+            <Button className='btn btn-danger open-hand-btn' disabled={perResult.points < 101 || !hand.isTurn} >Open your hand!</Button>
+            <Button className='btn btn-danger calculate-per-btn' onClick={handleClick}>Like a G6</Button>
         </>
     );
 }
