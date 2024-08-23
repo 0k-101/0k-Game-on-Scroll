@@ -10,10 +10,11 @@ module.exports = {
       url: process.env.API_KEY,
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2, process.env.PRIVATE_KEY3, process.env.PRIVATE_KEY4, process.env.PRIVATE_KEY5],
       chainId: 11155111,
-      timeout: 100000
+    },
+    scroll: {
+      url: "https://sepolia-rpc.scroll.io/",
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2, process.env.PRIVATE_KEY3, process.env.PRIVATE_KEY4, process.env.PRIVATE_KEY5],
+      chainId: 534351,
     }
-  },
-  chai: {
-    timeout: 100000
   }
 };
