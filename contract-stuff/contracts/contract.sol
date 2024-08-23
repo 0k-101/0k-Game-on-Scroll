@@ -12,6 +12,8 @@ contract OK_101 {
     event GameStarted(uint256 timestamp);
     event PaymentReceived(address player, uint256 amount);
     event PaymentSent(address player, uint256 amount);
+    event PlayerLeft(address player);
+    event PlayerKicked(address player);
 
     constructor() {
         owner = msg.sender;
@@ -65,7 +67,15 @@ contract OK_101 {
         }
     }
 
-    function unready() public onlyPlayer {
+    function getPlayers() public view returns (address[4] memory) {
+        return players;
+    }
+
+    function getReadyStatus() public view returns (bool[4] memory) {
+        return readyStatus;
+    }
+
+    function leaveGame() public onlyPlayer {
         require(
             gameStarted == false,
             "Game has already started - wait for next game"
@@ -73,7 +83,26 @@ contract OK_101 {
         for (uint8 i = 0; i < 4; i++) {
             if (players[i] == msg.sender) {
                 require(readyStatus[i] == true, "Player is not ready");
+                players[i] = address(0);
                 readyStatus[i] = false;
+                playerCount--;
+                emit PlayerLeft(msg.sender);
+                break;
+            }
+        }
+    }
+
+    function kickPlayer(address _player) public onlyOwner {
+        require(
+            gameStarted == false,
+            "Game has already started - wait for next game"
+        );
+        for (uint8 i = 0; i < 4; i++) {
+            if (players[i] == _player) {
+                players[i] = address(0);
+                readyStatus[i] = false;
+                playerCount--;
+                emit PlayerKicked(_player);
                 break;
             }
         }

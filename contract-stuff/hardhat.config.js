@@ -5,6 +5,16 @@ require("dotenv").config();
 module.exports = {
   solidity: "0.8.24",
   etherscan: {
+    customChains: [
+      {
+        network: "scrollSepolia",
+        chainId: 534351,
+        urls: {
+          apiURL: "https://api-sepolia.scrollscan.com/api", // Replace with the actual API URL for verification
+          browserURL: "https://sepolia.scrollscan.com/'",
+        },
+      },
+    ],
     apiKey: {
       scrollSepolia: process.env.SCROLL_API_KEY,
     },

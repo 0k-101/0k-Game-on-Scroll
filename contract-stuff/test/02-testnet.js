@@ -1,3 +1,4 @@
+const { ok } = require("assert");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -10,15 +11,12 @@ describe("OK_101 Contract Tests", function () {
   let addr3;
   let addr4;
 
-  // const contractAddress = process.env.CONTRACT_ADDRESS;
-  let contractAddress = "0x58335FBbE75eECb4C0a724D76a7eB5C0386664F2";
+  const contractAddress = process.env.CONTRACT_ADDRESS;
   beforeEach(async function () {
-    const network = await ethers.provider.getNetwork();
-    if (contractAddress) {
+    if (contractAddress !== "") {
       OK_101 = await ethers.getContractFactory("OK_101");
       ok_101 = await OK_101.attach(contractAddress);
       [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
-      contractAddress = ok_101.target;
       console.log("Contract attached to address:", contractAddress);
       const tx = await ok_101.connect(owner).clearGame({ gasLimit: 400000 });
       await tx.wait();
@@ -27,6 +25,7 @@ describe("OK_101 Contract Tests", function () {
       OK_101 = await ethers.getContractFactory("OK_101");
       ok_101 = await OK_101.deploy();
       await ok_101.waitForDeployment();
+      [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
       console.log("Contract deployed/attached to address:", ok_101.target);
       console.log("Owner address:", owner.address);
     }
@@ -69,7 +68,7 @@ describe("OK_101 Contract Tests", function () {
     });
   });
 
-  describe("Ready/Unready", function () {
+  describe("Ready/Leave Game", function () {
     it("Should allow a player to be ready", async function () {
       await (await ok_101.connect(addr1).joinGame({ gasLimit: 300000 })).wait();
       await (await ok_101.connect(addr1).ready({ gasLimit: 200000 })).wait();
@@ -77,12 +76,29 @@ describe("OK_101 Contract Tests", function () {
       expect(readyStatus).to.equal(true);
     });
 
-    it("Should allow a player to unready", async function () {
+    it("Should allow a player to leave", async function () {
+      console.log("Ready status:", await ok_101.readyStatus(0));
+
       await (await ok_101.connect(addr1).joinGame({ gasLimit: 300000 })).wait();
       await (await ok_101.connect(addr1).ready({ gasLimit: 200000 })).wait();
-      await (await ok_101.connect(addr1).unready({ gasLimit: 200000 })).wait();
+      const tx = await ok_101.connect(addr1).leaveGame({ gasLimit: 200000 });
+      expect(tx).to.emit(ok_101, "PlayerLeft").withArgs(addr1.address);
+      await tx.wait();
       const readyStatus = await ok_101.readyStatus(0);
+      console.log(await ok_101.players(0));
       expect(readyStatus).to.equal(false);
+      const player = await ok_101.players(0);
+      expect(player).to.equal(ethers.ZeroAddress);
+    });
+    it("Should kick the player if they are not ready", async function () {
+      await (await ok_101.connect(addr1).joinGame({ gasLimit: 300000 })).wait();
+      const tx = await ok_101
+        .connect(owner)
+        .kickPlayer(addr1.address, { gasLimit: 200000 });
+      expect(tx).to.emit(ok_101, "PlayerKicked").withArgs(addr1.address);
+      await tx.wait();
+      const player = await ok_101.players(0);
+      expect(player).to.equal(ethers.ZeroAddress);
     });
 
     it("Should start the game when all players are ready", async function () {
