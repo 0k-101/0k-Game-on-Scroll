@@ -64,7 +64,7 @@ function createGameSocket(gameRoomId) {
                                 throw new Error('Player Index could not found!');
                             }
                         } catch (e) {
-                            console.error(e.msg, ` Socket id: ${socket.id}`);
+                            console.log(e, ` Socket id: ${socket.id}`);
                             return;
                         }
                         // check if its his turn and didnot already drew 
@@ -72,7 +72,7 @@ function createGameSocket(gameRoomId) {
                             gm.whose_turn === playerIdx ? null :  new Error('Not your turn');
                             gm.didDrawCard[playerIdx] ? new Error('Already drew a card') : null;
                         } catch (e) {
-                            console.error(e.msg);
+                            console.log(e);
                             return;
                         }
 
@@ -116,8 +116,6 @@ function createGameSocket(gameRoomId) {
                         gm.discard_piles[(handFromClient.playerIdx+3) % 4].pop()
                         gm.didDrawCard[playerIdx] = true;
                         gameSocket.emit('draw-card-left-from-server',gm.discard_piles,playerIdx); 
-                        console.log(`Server-side: Draw Left completed!`);
-
                     })
 
                     socket.on('draw-card-mid-request', (hand,targetSlotIdx) => {
@@ -138,7 +136,7 @@ function createGameSocket(gameRoomId) {
                             }
                             
                         } catch (e) {
-                            console.error(e.msg, ` Socket id: ${socket.id}`);
+                            console.log(e, ` Socket id: ${socket.id}`);
                             return;
                         }
 
@@ -147,13 +145,12 @@ function createGameSocket(gameRoomId) {
                             gm.whose_turn === playerIdx ? null :  new Error('Not your turn');
                             gm.didDrawCard[playerIdx] ? new Error('Already drew a card') : null;
                         } catch (e) {
-                            console.error(e.msg);
+                            console.log(e);
                             return;
                         }
 
                         gm.drawCardMid( hand, targetSlotIdx );
                         socket.emit('draw-card-mid-response', gm.players.get(hand.playerIdx).cards);
-                        console.log(`Server-side: Draw Mid completed!`);
 
                     }) 
 
@@ -162,7 +159,6 @@ function createGameSocket(gameRoomId) {
                         // check if it's turn
                         // find players id on the server
                         let playerIdx = -1;
-                        console.log(`alp`);
                         try {
                             for ( let [idx,player] of gm.players) {
                                 if (player.player_id === socket.id) {
@@ -177,17 +173,14 @@ function createGameSocket(gameRoomId) {
                             console.log(e, ` Socket id: ${socket.id}`);
                             return;
                         }
-                        console.log('next turn here ! ',playerIdx)
                         
                         try {
                             gm.whose_turn === playerIdx ? null :  new Error('Not your turn');
                             gm.didDrawCard[playerIdx] ? null : new Error(`Hasn't drawn a card yet!`);
                         } catch (e) {
-                            console.error(e.msg);
+                            console.log(e);
                             return;
                         }
-                        console.log('next turn whose_turn control ! ',gm.whose_turn === playerIdx)
-
                         // check wheter card is matching as expected
                         try {
                             const indexOfDiscardedCard = gm.players.get(playerIdx).cards.indexOf(discardedCardId);
@@ -195,13 +188,12 @@ function createGameSocket(gameRoomId) {
                                 throw new Error('Card not found in hand / discarded card mismatch! Reverting process...');
                             }
                         } catch (e) {
-                            console.log(e.msg);
+                            console.log(e);
                             socket.emit('next-turn-error', gm.players.get(playerIdx).cards, gm.discard_piles[playerIdx]);
                             return;
                         }
-                        console.log(` ~before gm.nextturn`);
-                        
-                        
+
+
                         gm.nextTurn();
                         gm.discard_piles[handFromClient.playerIdx].push(discardedCardId);
                         gm.players.set(handFromClient.playerIdx, {
