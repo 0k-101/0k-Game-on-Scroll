@@ -4,17 +4,34 @@ require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.24",
+  etherscan: {
+    apiKey: {
+      scrollSepolia: process.env.SCROLL_API_KEY,
+    },
+  },
   networks: {
     hardhat: {},
     sepolia: {
       url: process.env.API_KEY,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2, process.env.PRIVATE_KEY3, process.env.PRIVATE_KEY4, process.env.PRIVATE_KEY5],
+      accounts: [
+        process.env.PRIVATE_KEY,
+        process.env.PRIVATE_KEY2,
+        process.env.PRIVATE_KEY3,
+        process.env.PRIVATE_KEY4,
+        process.env.PRIVATE_KEY5,
+      ],
       chainId: 11155111,
     },
-    scroll: {
+    scrollSepolia: {
       url: "https://sepolia-rpc.scroll.io/",
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2, process.env.PRIVATE_KEY3, process.env.PRIVATE_KEY4, process.env.PRIVATE_KEY5],
-      chainId: 534351,
-    }
-  }
+      accounts: [
+        process.env.PRIVATE_KEY,
+        process.env.PRIVATE_KEY2,
+        process.env.PRIVATE_KEY3,
+        process.env.PRIVATE_KEY4,
+        process.env.PRIVATE_KEY5,
+      ],
+      timeout: 200000,
+    },
+  },
 };
