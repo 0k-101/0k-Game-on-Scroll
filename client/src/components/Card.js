@@ -27,7 +27,7 @@ export default function Card(props) {
                 for (let idx = 0; idx < newHand.cardSlots.length; idx++) {
                     if (newHand.cardSlots[idx] === 0) {
                         if (props.cardType === CardTypes.IN_MID_PILE) {
-                            newHand.cardSlots[idx] = 107;
+                            newHand.cardSlots[idx] = 200;
                             newHand.didDrawCard= true;
                             drawCardFromMid(socket,newHand);
                         } else {
@@ -86,7 +86,7 @@ export default function Card(props) {
                         newHand.rightPile.push(cardId);
                         newHand.isTurn = false;
                         setHand(newHand);
-                        emitNextTurn(socket,newHand,newHand.playerIdx,item.cardId);
+                        emitNextTurn(socket,newHand,item.cardId);
                         return;
                     } else if (sourceSlotIdx !== -1) {
                         // Remove the card from the source slot
@@ -100,7 +100,7 @@ export default function Card(props) {
                     newHand.cardSlots[targetSlotIdx] = cardId;
                     if (props.cardType === CardTypes.IN_MID_PILE) {
                         newHand.didDrawCard = true;
-                        drawCardFromMid(socket,newHand);
+                        drawCardFromMid(socket,newHand,targetSlotIdx);
                         return;
                     }
                 } else {
@@ -165,6 +165,7 @@ export default function Card(props) {
                 // set the newHand
                 if (props.cardType === CardTypes.IN_MID_PILE) {
                     newHand.didDrawCard = true;
+                    console.log()
                     drawCardFromMid(socket,newHand);
                 }
                 setHand(newHand);
@@ -173,36 +174,35 @@ export default function Card(props) {
         }
     }), [hand, setHand, props.cardId, props.cardType, props.undraggable]);
 
-    function emitNextTurn( socket,hand,playerIdx,cardId) {
-        socket.emit('next-turn-from-client', {
-            playerIdx,
-            hand,
-            cardId
-        })
+    function emitNextTurn( socket,hand,cardId) {
+        socket.emit('next-turn-from-client',hand,cardId);
     }
 
     function emitDrawCardLeft ( socket,newHand ) {
         socket.emit('draw-card-left-from-client', newHand);
     }
     
-    function drawCardFromMid (socket, newHand) {
-        socket.emit('draw-card-mid-request',newHand);
+    function drawCardFromMid (socket, newHand,targetSlotIdx) {
+        socket.emit('draw-card-mid-request',newHand,targetSlotIdx);
     }
 
     const colorStrId = props.cardId % 53;
     const colorStr = 
-    props.cardId === 107 ? 'joker' :  
-    colorStrId === 0 ? 'joker'  : 
-    colorStrId <= 13 ? 'gri'    :
-    colorStrId <= 26 ? 'mavi'   :
-    colorStrId <= 39 ? 'pembe'  : 'turuncu'
+        props.cardId === 200 ? 'back-turned' :  
+        colorStrId === 0 ? 'joker'  : 
+        colorStrId <= 13 ? 'gri'    :
+        colorStrId <= 26 ? 'mavi'   :
+        colorStrId <= 39 ? 'pembe'  : 'turuncu'
     
     
-    const cardImg = require(`../assets/cards/${colorStr}${colorStr === `joker` ? `` : props.cardId % 13 === 0 ? 13 : props.cardId % 13}.png`);
+    const cardImg = require(`../assets/cards/${colorStr}${colorStr === `back-turned` || colorStr === `joker` ?  `` : props.cardId % 13 === 0 ? 13 : props.cardId % 13}.png`);
+
+    const flipCard = () => {
+    }
 
     const handleClick = 
         props.cardType === CardTypes.IN_DISCARD ? () => alert(`You cannot pick a card from the discard pile! ${props.cardType}`) : 
-        !hand.isTurn ?  () => alert('It is not your turn!') :
+        !hand.isTurn ? (props.cardType === CardTypes.IN_HAND ? flipCard() : () => alert('It is not your turn!')) :
         props.undraggable ? () =>alert('You can only draw one card per turn!') : null
     
     return (

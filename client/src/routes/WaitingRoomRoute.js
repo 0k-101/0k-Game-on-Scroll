@@ -10,19 +10,19 @@ export default function WaitingRoom() {
         socket.connect();
         socket.on('connect', async () => {
             console.log('connected to server');
-            const wallet = window.ethereum;
-            if (wallet) {
-                const provider = new ethers.BrowserProvider(wallet);
-                await provider.send('eth_requestAccounts', []);
-                const signer = provider.getSigner();
-                const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-                const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
-                const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-                console.log('contract:', contract);
-                const tx = await contract.connect(signer)
-                console.log('tx:', tx);
-                await tx.joinGame();
-            }
+            // const wallet = window.ethereum;
+            // if (wallet) {
+            //     const provider = new ethers.BrowserProvider(wallet);
+            //     await provider.send('eth_requestAccounts', []);
+            //     const signer = provider.getSigner();
+            //     const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+            //     const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
+            //     const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+            //     console.log('contract:', contract);
+            //     const tx = await contract.connect(signer)
+            //     console.log('tx:', tx);
+            //     await tx.joinGame();
+            // }
         });
         socket.on('player-counter', counter => {
             setPlayerCounter(counter);
@@ -31,21 +31,21 @@ export default function WaitingRoom() {
             navigate(`/game/${gameRoomId}`);
         })
 
-        socket.on('await-transaction', async () => {
-            const wallet = window.ethereum;
-            if (wallet) {
-                const provider = new ethers.BrowserProvider(wallet);
-                await provider.send('eth_requestAccounts', []);
-                const signer = provider.getSigner();
-                const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-                const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
-                console.log('contractAddress:', contractAddress);
-                console.log('contractAbi:', contractAbi);
-                const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-                console.log('contract:', contract);
-            }
+        // socket.on('await-transaction', async () => {
+        //     const wallet = window.ethereum;
+        //     if (wallet) {
+        //         const provider = new ethers.BrowserProvider(wallet);
+        //         await provider.send('eth_requestAccounts', []);
+        //         const signer = provider.getSigner();
+        //         const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+        //         const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
+        //         console.log('contractAddress:', contractAddress);
+        //         console.log('contractAbi:', contractAbi);
+        //         const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+        //         console.log('contract:', contract);
+        //     }
 
-        })
+        // })
 
         return () => {
             socket.off('connect');

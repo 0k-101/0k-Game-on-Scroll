@@ -35,6 +35,7 @@ class GameManager {
             });
         }
         this.opened_hands = Array.from({length: 4}, () => false);
+        this.didDrawCard = Array.from({length:4}, () => true);
     }
 
     dealCards() {
@@ -43,7 +44,6 @@ class GameManager {
         for (let [idx,player] of this.players) {
             // console.log(idx);
             const playerCards = cards.splice(0, idx === this.whose_turn ? 22 : 21);
-            player.cards.splice(0, idx === this.whose_turn ? 22 : 21, [...playerCards]);
             this.#socket.to(player.player_id).emit('dealing-cards', playerCards,idx);
             this.players.set(idx, {
                 ...player,
@@ -51,15 +51,21 @@ class GameManager {
             });
         }
         this.#mid_pile = cards.reverse();
+        console.log(this.players.get(1).cards);
     }
 
-    drawCardMid( hand ) {
+    drawCardMid( hand,targetSlotIdx ) {
         const cardId = this.#mid_pile.pop();
         const newCards = hand.cardSlots;
-        for (let idx = 0; idx < newCards.length; idx++) {
-            if (newCards[idx] === 107) {
-                newCards[idx] = cardId;
-                break;
+        
+        if (newCards[targetSlotIdx] === 200) {
+            newCards[targetSlotIdx] = cardId;
+        } else {
+            for (let idx = 0; idx < newCards.length; idx++) {
+                if (newCards[idx] === 200) {
+                    newCards[idx] = cardId;
+                    break;
+                }
             }
         }
         const player = this.players.get(hand.playerIdx);
@@ -67,6 +73,7 @@ class GameManager {
             ...player,
             cards: newCards
         })
+        this.didDrawCard[hand.playerIdx] = true;
         return cardId;
     }
 
@@ -80,6 +87,7 @@ class GameManager {
 
     nextTurn(){
         this.whose_turn = (this.whose_turn + 1) % 4;
+        this.didDrawCard[this.whose_turn] = false;
         this.#socket.emit('next-turn-from-server', this.whose_turn,this.discard_piles);
     }
 

@@ -99,7 +99,6 @@ const checkForSameColor = (hand, okeyId) => {
     let cards = []
     let okeyCount = 0
     hand.forEach(card => {
-        console.log('card ', card)
         if (card === 53 || card === 106) {
             cards.push(new Card((okeyId % 52 === 0 ? 52 : okeyId % 52), true))
         }
@@ -111,7 +110,6 @@ const checkForSameColor = (hand, okeyId) => {
             cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
         }
     })
-    console.log('okey count ', okeyCount)
     let uniqueColors = []
     if (okeyCount === 0) {
         let initialValue = (cards[0].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
@@ -157,13 +155,9 @@ const checkForSameColor = (hand, okeyId) => {
         return per
     }
     else if (okeyCount === 2) {
-        console.log('cards', cards)
         let okeyIndex1 = cards.findIndex(card => card.isFakeOkey === false && card.cardId % 52 === okeyId)
         let okeyIndex2 = cards.findIndex(card => card.isFakeOkey === false && card.cardId % 52 === okeyId && okeyIndex1 !== cards.indexOf(card))
         let normalCardIndex = cards.findIndex(card => card.cardId % 52 !== okeyId || (card.cardId % 52 === okeyId && card.isFakeOkey === true))
-        console.log('okey index 1 ', okeyIndex1)
-        console.log('okey index 2 ', okeyIndex2)
-        console.log('normal index ', normalCardIndex)
         let initialValue = (cards[normalCardIndex].cardId % 13 === 0 ? 13 : cards[0].cardId % 13)
         for (let i = 0; i < cards.length; i++) {
             if (i === okeyIndex1 || i === okeyIndex2) {
@@ -239,13 +233,12 @@ export default function PerFinder() {
     const { hand } = useContext(HandContext);
     function handleClick() {
         setPerResult( perFinder([...hand.cardSlots]));
-        console.log(hand.isTurn);
     }    
     return (
         <>
             <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {perResult.pers?.length} , pts: { perResult.points } </h2>
-            <Button className='btn btn-danger open-hand-btn' disabled={perResult.points < 101 || !hand.isTurn} >Open your hand!</Button>
-            <Button className='btn btn-danger calculate-per-btn' onClick={handleClick}>Like a G6</Button>
+            <Button className='btn btn-danger open-hand-btn' disabled={perResult.points < 101 || !hand.isTurn} >Open Hand</Button>
+            <Button className='btn btn-danger calculate-per-btn' onClick={handleClick}>Calculate Pers</Button>
         </>
     );
 }

@@ -48,9 +48,9 @@ export default function Board() {
                 }
                 </OppLeftPile>
                 <MidPile>
-                        <Card cardId={107} cardType={CardTypes.IN_MID_PILE} undraggable={true}
+                        <Card cardId={200} cardType={CardTypes.IN_MID_PILE} undraggable={true}
                         style={{zIndex:0}} />
-                        <Card cardId={107} cardType={CardTypes.IN_MID_PILE} undraggable={hand.didDrawCard}
+                        <Card cardId={200} cardType={CardTypes.IN_MID_PILE} undraggable={hand.didDrawCard}
                         style={{zIndex:1}} />
                 </MidPile>
                 <RightPile>
