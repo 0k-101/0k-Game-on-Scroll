@@ -13,31 +13,13 @@ export default function WaitingRoom({ account }) {
   useEffect(() => {
     socket.connect();
     socket.on("connect", async () => {
-      if (!account) {
-        window.alert("Please install/login MetaMask to play the game");
-        navigate("/");
-      }
+      // if (!account) {
+      //   window.alert("Please install/login MetaMask to play the game");
+      //   navigate("/");
+      // }
       console.log("connected to server");
 
-      const wallet = window.ethereum;
-      if (wallet) {
-        const provider = new ethers.BrowserProvider(wallet);
-        await provider.send('eth_requestAccounts', []);
-        const signer = provider.getSigner();
-        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-        const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
-        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-        window.alert("You have connected to the server, now sign the transaction to join the game lobby");
-        try {
-          const tx = await contract.connect(signer).joinGame();
-          await tx.wait();
-          window.alert("You have joined the game lobby, now wait for the other players to join");
-        }
-        catch (e) {
-          window.alert("Failed to join the game");
-          window.location.href = "/";
-        }
-      }
+
 
     });
     socket.on("player-counter", (counter) => {
@@ -90,13 +72,17 @@ export default function WaitingRoom({ account }) {
       signer
     );
 
+    console.log("contract:", contract);
     const players = await contract.getPlayers();
     const readyStatus = await contract.getReadyStatus();
+    console.log("players:", players);
+    console.log("readyStatus:", readyStatus);
     const tx = await contract.connect(owner).kickPlayer(signerAddress);
     await tx.wait();
     console.log("tx:", tx);
-    console.log('tx.logs:', tx.logs);
     for (let i = 0; i < 4; i++) {
+      console.log("Player address:", players[i]);
+      console.log("Ready status:", readyStatus[i]);
     }
     window.alert("You have been kicked from the game");
     window.location.href = "/";
@@ -120,8 +106,11 @@ export default function WaitingRoom({ account }) {
         );
         const signerAddress = await signer.getAddress();
         for (let i = 0; i < 4; i++) {
+          const playerAddress = await contract.players(i);
           if (playerAddress === signerAddress) {
             inGame = true;
+            const ready = await contract.readyStatus(i);
+            console.log("ready:", ready);
             if (ready) {
               isReady = true;
               await kickPlayer();
@@ -144,23 +133,22 @@ export default function WaitingRoom({ account }) {
         }
         if (isReady) {
           window.alert(
-            "You are already ready to play, wait for the other players"
+            "You are already ready to play wait for the other players"
           );
         } else {
           const ready = await contract.connect(signer).ready();
           await ready.wait();
-          window.alert(
+          console.log(
             "You are ready to play, now please deposit the payment"
           );
-          const amount = ethers.parseEther("0.0001");
-          const payment = await contract.deposit({ value: amount });
-          await payment.wait();
-          console.log("Your payment has been received");
-
-          /// BURDAN SONRA OYUNA GİRİŞ YAPILACAK
+          // const amount = ethers.parseEther("0.0001");
+          // const payment = await contract.deposit({ value: amount });
+          // await payment.wait();
+          // console.log("Your payment has been received");
         }
       }
     } catch (e) {
+      console.log(e);
       window.alert("Failed to join game");
       await kickPlayer();
       window.alert("You have been kicked from the game");
