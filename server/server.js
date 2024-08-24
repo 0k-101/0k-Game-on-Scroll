@@ -281,7 +281,14 @@ function createGameSocket(gameRoomId) {
                             return;
                         }
 
-
+                        if (gm.opened_hands[playerIdx]) {
+                            const cards_in_hand = handFromClient.cardSlots.filter(card => card !== 0);
+                            console.log()
+                            if (cards_in_hand.length === 0){
+                                gm.endRound();
+                                return;
+                            }
+                        }
                         gm.nextTurn();
                         gm.discard_piles[handFromClient.playerIdx].push(discardedCardId);
                         gm.players.set(handFromClient.playerIdx, {
@@ -289,6 +296,8 @@ function createGameSocket(gameRoomId) {
                             cards: handFromClient.cardSlots
                         });
                         gameSocket.emit('next-turn-from-server',gm.whose_turn,gm.discard_piles);
+                        
+
                     })
                     
 
