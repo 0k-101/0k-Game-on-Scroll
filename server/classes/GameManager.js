@@ -51,6 +51,11 @@ class GameManager {
             });
         }
         this.#mid_pile = cards.splice(0, 4);
+        this.discard_piles = [
+            [],
+            [],
+            [],
+            []];
     }
 
     drawCardMid( hand,targetSlotIdx ) {

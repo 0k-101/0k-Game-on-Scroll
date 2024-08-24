@@ -13,7 +13,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 export const HandContext = createContext();
-
+let totalScores=[];
 let socket;
 export default function Game() {
     const params = useParams();
@@ -24,6 +24,7 @@ export default function Game() {
     const [endModalShow,setEndModalShow] = useState(false);
     const [roundInfos,setRoundInfos] = useState({roundNum:0,roundScores:[0,0,0,0]});
     const [clock,setClock] = useState(0);
+    const [totalScores,setTotalScores] = useState([0,0,0,0]);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -167,9 +168,9 @@ export default function Game() {
                 setEndModalShow(true);
             }
         })
-        socket.on('end-game',()=>{
-            alert('Game is over! You`ll be redirected');
-            console.log(this.players);
+        socket.on('end-game',(totalScores)=>{
+            setTotalScores([...totalScores]);
+            setEndModalShow(true);
             socket.disconnect();
             setTimeout(() => {
                 navigate('/');
