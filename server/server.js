@@ -236,7 +236,7 @@ function createGameSocket(gameRoomId) {
                         
                         gm.players.set(playerIdx, {
                             ...gm.players.get(playerIdx),
-                            cards: cardSlots
+                            cards: [...cardSlots].filter(card => card !== 0)
                         });
                         console.log(gm.players.get(playerIdx));
                         gameSocket.emit('open-hand-response-to-all', gm.tables);
