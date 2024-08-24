@@ -157,7 +157,11 @@ class GameManager {
     }
     
     endGame(){
-        this.#socket.emit('end-game', this.players);
+        const scores = [];
+        for (let [idx,player] of this.players) {
+            scores.push(player.score);
+        }
+        this.#socket.emit('end-game', scores);
     }
 
 }
