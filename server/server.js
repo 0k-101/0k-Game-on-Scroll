@@ -170,6 +170,7 @@ function createGameSocket(gameRoomId) {
                             for (let per of perResults.pers) {
                                 totalLen += per.perCardIds.length;
                             }
+                            console.log(totalLen);
                             if (totalLen > 21) {
                                 throw new Error('You have to leave at least 1 card in your hand!');
                             }

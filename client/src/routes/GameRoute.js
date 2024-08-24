@@ -78,6 +78,10 @@ export default function Game() {
                 Array.from({ length: 60 }, () => 0),
                 Array.from({ length: 60 }, () => 0)
             ]
+            newHand.rightPile = [];
+            newHand.leftPile = [];
+            newHand.oppRightPile = [];
+            newHand.oppLeftPile = [];
             setTables(InitialTables);
             setHand(newHand);
         })
@@ -161,6 +165,14 @@ export default function Game() {
             } else {
                 setEndModalShow(true);
             }
+        })
+        socket.on('end-game',()=>{
+            alert('Game is over! You`ll be redirected');
+            console.log(this.players);
+            socket.disconnect();
+            setTimeout(() => {
+                navigate('/');
+            }, 3000);
         })
         
         return (() => {

@@ -147,10 +147,13 @@ class GameManager {
                this.endGame();
             }
         }, 15000);
-
+        
         
     }
     
+    endGame(){
+        this.#socket.emit('end-game', this.players);
+    }
 
 }
 module.exports = GameManager;
