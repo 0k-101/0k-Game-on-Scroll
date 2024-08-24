@@ -18,7 +18,7 @@ export default function OverviewPanel () {
     
     const { hand,setHand,socket, tables,setTables } = useContext(HandContext);
     
-    const [ bgImageIndex,setBgImageIndex ] = useState();
+    const [ bgImageIndex,setBgImageIndex ] = useState(0);
     useEffect(() => {
         setBgImageIndex((hand.whoseTurn + (4- hand.playerIdx)) %4 );
     },[])

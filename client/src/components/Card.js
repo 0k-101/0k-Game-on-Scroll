@@ -25,6 +25,10 @@ export default function Card(props) {
                     // trigger alert 1
                     return;
                 }
+                if (!hand.isTurn) {
+                    // trigger alert 2
+                    return;
+                }
                 
                 const newHand = { ...hand };
                 for (let idx = 0; idx < newHand.cardSlots.length; idx++) {
@@ -44,10 +48,12 @@ export default function Card(props) {
                 }
                 return;
             } else if (dropResult) {
-                if (hand.didDrawCard && (props.cardType === CardTypes.IN_MID_PILE || props.cardType === CardTypes.IN_LEFT_PILE)) {
+                if ((!hand.isTurn || hand.didDrawCard) && (props.cardType === CardTypes.IN_MID_PILE || props.cardType === CardTypes.IN_LEFT_PILE)) {
+                    // @TODO:
                     // trigger alert 1
                     return;
-                }
+                } 
+
                 const { slotIdx: targetSlotIdx } = dropResult;
                 const newHand = { ...hand };
                 const cardId = props.cardId;
@@ -106,6 +112,7 @@ export default function Card(props) {
                         drawCardFromMid(socket,newHand,targetSlotIdx);
                         return;
                     } else if ( props.cardType === CardTypes.IN_LEFT_PILE) {
+                        newHand.didDrawCard = true;
                         emitDrawCardLeft(socket,newHand);
                         setHand(newHand);
                         return;
@@ -174,6 +181,7 @@ export default function Card(props) {
                     newHand.didDrawCard = true;
                     drawCardFromMid(socket,newHand);
                 } else if (props.cardType === CardTypes.IN_LEFT_PILE) {
+                    newHand.didDrawCard = true;
                     emitDrawCardLeft(socket,newHand);
                 }
                 setHand(newHand);
