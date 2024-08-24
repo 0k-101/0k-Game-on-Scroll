@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import socket from "../sockets/WaitingSocket.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
@@ -35,6 +35,7 @@ export default function WaitingRoom({ account }) {
           window.alert("You have joined the game lobby, now wait for the other players to join");
         }
         catch (e) {
+          console.error(e);
           window.alert("Failed to join the game");
           window.location.href = "/";
         }
@@ -70,7 +71,7 @@ export default function WaitingRoom({ account }) {
       socket.off("game-start");
       socket.disconnect();
     };
-  }, [navigate]);
+  }, [navigate,account]);
 
   const kickPlayer = async () => {
     const wallet = window.ethereum;
@@ -91,8 +92,6 @@ export default function WaitingRoom({ account }) {
       signer
     );
 
-    const players = await contract.getPlayers();
-    const readyStatus = await contract.getReadyStatus();
     const tx = await contract.connect(owner).kickPlayer(signerAddress);
     await tx.wait();
     console.log("tx:", tx);
@@ -104,6 +103,7 @@ export default function WaitingRoom({ account }) {
   };
 
   async function handleClick() {
+    setLoading(true);
     try {
       const wallet = window.ethereum;
       if (wallet) {
@@ -121,8 +121,10 @@ export default function WaitingRoom({ account }) {
         );
         const signerAddress = await signer.getAddress();
         for (let i = 0; i < 4; i++) {
+          const playerAddress = await contract.players(i);
           if (playerAddress === signerAddress) {
             inGame = true;
+            const ready = await contract.readyStatus(i);
             if (ready) {
               isReady = true;
               await kickPlayer();
