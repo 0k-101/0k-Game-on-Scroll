@@ -115,15 +115,9 @@ export default function Game() {
             setHand(newHand);
         })
         
-        socket.on('draw-card-mid-response', (drawnCardId) => {
+        socket.on('draw-card-mid-response', newCardSlots => {
             const newHand = { ...hand };
-
-            for (let slot of newHand.cardSlots) {
-                if (slot === 200) {
-                    slot = drawnCardId;
-                    break;
-                }
-            }
+            newHand.cardSlots = newCardSlots;
             newHand.didDrawCard = true;
             setHand(newHand);
         })
@@ -136,10 +130,6 @@ export default function Game() {
             newHand.cardSlots = newCardSlots;
             newHand.hasOpened = true;
             setHand(newHand);
-        })
-
-        socket.on('err',e => {
-            console.log(e);
         })
         
         return (() => {
@@ -154,7 +144,6 @@ export default function Game() {
             socket.off('draw-card-left-error');
             socket.off('open-hand-response-to-all');
             socket.off('open-hand-response-to-client');
-            socket.off('err');
         })
     }, [hand, navigate])
     
