@@ -178,10 +178,12 @@ function createGameSocket(gameRoomId) {
                             if (totalLen > 21) {
                                 throw new Error('You have to leave at least 1 card in your hand!');
                             }
-
+                            if (gm.didDrawCard[playerIdx] === false) {
+                                throw new Error('You have to draw a card first!');
+                            }
 
                         } catch (e) {
-                            console.log(e, ` Socket id: ${socket.id}`);
+                            socket.emit('err',e);
                             return;
                         }
                         

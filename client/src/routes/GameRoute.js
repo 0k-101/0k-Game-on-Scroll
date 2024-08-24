@@ -137,6 +137,10 @@ export default function Game() {
             newHand.hasOpened = true;
             setHand(newHand);
         })
+
+        socket.on('err',e => {
+            console.log(e);
+        })
         
         return (() => {
             socket.off('err-game-full');
@@ -150,6 +154,7 @@ export default function Game() {
             socket.off('draw-card-left-error');
             socket.off('open-hand-response-to-all');
             socket.off('open-hand-response-to-client');
+            socket.off('err');
         })
     }, [hand, navigate])
     
