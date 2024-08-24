@@ -72,7 +72,7 @@ export default function Game() {
             const newHand = { ...hand };
             newHand.whoseTurn = whoseTurn;
             newHand.isTurn = whoseTurn === hand.playerIdx;
-            if (isTurn) {
+            if (newHand.isTurn) {
                 newHand.didDrawCard = false;
             }
             newHand.rightPile = discard_piles[newHand.playerIdx]
