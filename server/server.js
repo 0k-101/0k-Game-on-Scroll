@@ -149,8 +149,8 @@ function createGameSocket(gameRoomId) {
                             return;
                         }
 
-                        const drawnCardId = gm.drawCardMid( hand, targetSlotIdx );
-                        socket.emit('draw-card-mid-response', drawnCardId);
+                        gm.drawCardMid( hand, targetSlotIdx );
+                        socket.emit('draw-card-mid-response', gm.players.get(playerIdx).cards);
 
                     }) 
 
