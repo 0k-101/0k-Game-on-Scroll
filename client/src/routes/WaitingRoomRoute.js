@@ -152,10 +152,12 @@ export default function WaitingRoom({ account }) {
           window.alert(
             "You are ready to play, now please deposit the payment"
           );
-          // const amount = ethers.parseEther("0.0001");
-          // const payment = await contract.deposit({ value: amount });
-          // await payment.wait();
-          // console.log("Your payment has been received");
+          const amount = ethers.parseEther("0.0001");
+          const payment = await contract.deposit({ value: amount });
+          await payment.wait();
+          console.log("Your payment has been received");
+
+          /// BURDAN SONRA OYUNA GİRİŞ YAPILACAK
         }
       }
     } catch (e) {
