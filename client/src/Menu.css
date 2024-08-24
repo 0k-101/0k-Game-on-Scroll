@@ -12,13 +12,13 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    /* overflow-y: hidden; */
+    overflow-y: hidden;
     overflow-x: hidden;
     background-color: aquamarine;
     /* background: url('./assets/game/game-bg.png') no-repeat;*/
 }
 
-.game-route-bg::before {
+/* .game-route-bg::before {
     position: absolute;
     content: "";
     background: url('./assets/game/board_bg.png') no-repeat;
@@ -28,8 +28,8 @@
     height: 100%;
     bottom: -60%;
     left: 10%;
-    padding: 5px 50px 5px 50px; /* needed check-on later */
-}
+    padding: 5px 50px 5px 50px; /* needed check-on later 
+}*/
 
 .zeroK-logo {
     opacity: .90;

@@ -16,7 +16,7 @@ import OppRightPile from './OppRightPile'
 import OppLeftPile from './OppLeftPile';
 
 
-export default function Board() {
+export default function Board({midCounter}) {
 
     const { hand } = useContext(HandContext);
     return (
@@ -56,6 +56,9 @@ export default function Board() {
                         style={{zIndex:0}} />
                         <Card cardId={200} cardType={CardTypes.IN_MID_PILE} undraggable={hand.didDrawCard}
                         style={{zIndex:1}} />
+                        <h2 className="mid-counter"
+                        style={{zIndex:2}} 
+                        >{midCounter}</h2>
                 </MidPile>
                 <RightPile>
                     {

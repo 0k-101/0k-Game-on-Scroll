@@ -17,6 +17,7 @@ export default function Game() {
     const params = useParams();
     const [hand, setHand] = useState(InitialHand);
     const [tables, setTables] = useState(InitialTables);
+    const [midCounter, setMidCounter ]= useState(20);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -122,6 +123,10 @@ export default function Game() {
             setHand(newHand);
         })
 
+        socket.on('draw-card-mid-response-to-all', midLeftCount => {
+            setMidCounter(midLeftCount);
+        })
+
         socket.on('open-hand-response-to-all',tables => {
             setTables(tables);
         });
@@ -144,18 +149,19 @@ export default function Game() {
             socket.off('draw-card-left-error');
             socket.off('open-hand-response-to-all');
             socket.off('open-hand-response-to-client');
+            socket.off('draw-card-mid-response-to-all');
         })
     }, [hand, navigate])
     
     return (
         <div className="game-route-bg">
 
-            <HandContext.Provider value={{ hand, setHand, socket, tables,setTables }}>
+            <HandContext.Provider value={{ hand, setHand, socket, tables,setTables,midCounter }}>
                 <DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
                     <OverviewPanel />
                     <PerFinder />
-                    <Board />
+                    <Board midCounter={midCounter}/>
                 </DndProvider>
             </HandContext.Provider>
         </div>

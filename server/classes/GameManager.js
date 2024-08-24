@@ -73,7 +73,7 @@ class GameManager {
             cards: newCards
         })
         this.didDrawCard[hand.playerIdx] = true;
-        return cardId;
+        return this.#mid_pile.length;
     }
 
 
@@ -85,6 +85,13 @@ class GameManager {
     }
 
     nextTurn(){
+        for (let [idx,player] of this.players) {
+            if (player.cards.length === 0 ) {
+                // end round
+                // case of player with idx -202
+            }
+        }
+
         this.whose_turn = (this.whose_turn + 1) % 4;
         this.didDrawCard[this.whose_turn] = false;
         this.#socket.emit('next-turn-from-server', this.whose_turn,this.discard_piles);

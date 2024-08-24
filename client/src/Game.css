@@ -50,8 +50,18 @@
   padding-left:1.7%;
   right: 2%;
 }
-
 /* IN GAME */
+
+.mid-counter {
+  position: relative;
+  font-family: 'alagard';
+  left: 42.5%;
+  top: 75%;
+  font-size: 1.5rem;
+  color: #46352b;
+  /* text-shadow: 2px 2px 1px #1c2100; */
+}
+
 .table-slot {
     position: relative;
     transform: rotate3d(5, 20, 1, 5deg);
@@ -79,7 +89,7 @@
     margin: 0 auto;
     width: 80%;
     height: 30vh;
-    top: 69vh;
+    top: 65vh;
 
     padding: 5px 50px 5px 50px; /* needed check-on later */
     background-image: transparent;

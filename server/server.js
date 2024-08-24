@@ -76,37 +76,32 @@ function createGameSocket(gameRoomId) {
                             return;
                         }
 
+                        // // check wheter card is matching as expected
+                        // const cards = gm.players.get(playerIdx).cards; 
+                        // let copyOfUserHand = [...handFromClient.cardSlots].filter(card => card !== 0);
+                        // if (copyOfUserHand.length === 22) {
+                        //     cards.push(
+                        //         gm.discard_piles[(handFromClient.playerIdx+3) % 4][gm.discard_piles[(handFromClient.playerIdx+3) % 4].length-1] 
+                        //     );
+                        // }
+                        // cards.sort((a,b) => b-a);
+                        // copyOfUserHand.sort((a,b) => b-a);
 
-                        // check wheter card is matching as expected
-                        const cards = gm.players.get(playerIdx).cards; 
-                        const copyOfUserHand = [...handFromClient.cardSlots].filter(card => card !== 0);
-                        if (copyOfUserHand.length === 22) {
-                            cards.push(
-                                gm.discard_piles[(handFromClient.playerIdx+3) % 4][gm.discard_piles[(handFromClient.playerIdx+3) % 4].length-1] 
-                            );
-                        }
-                        cards.sort((a,b) => b-a);
-                        copyOfUserHand.sort((a,b) => b-a);
-
-                        try {
-                            if (cards.length !== copyOfUserHand.length) {
-                                throw new Error('Cards length mismatch');
-                            } else {
-                                for (let i = 0; i < cards.length; i++) {
-                                    if (cards[i] !== copyOfUserHand[i]) {
-                                        throw new Error('Cards mismatch with ids of ', cards[i], copyOfUserHand[i]);
-                                    }
-                                }
-                            }
-                        } catch (e) {
-                            console.log(e , ` Socket id: ${socket.id} - Reverting process...`);
-                            const revertedHand = gm.players.get(playerIdx).cards;
-                            while (revertedHand.length < 30) {
-                                revertedHand.push(0);
-                            }
-                            socket.emit('draw-card-left-error',revertedHand ,gm.discard_piles[(handFromClient.playerIdx+3) % 4]);
-                            return;
-                        }
+                        // try {
+                        //     for (let i = 0; i < copyOfUserHand.length; i++) {
+                        //         if (cards[i] !== copyOfUserHand[i]) {
+                        //             throw new Error('Cards mismatch with ids of ', cards[i], copyOfUserHand[i]);
+                        //         }
+                        //     }
+                        // } catch (e) {
+                        //     console.log(e , ` Socket id: ${socket.id} - Reverting process...`);
+                        //     const revertedHand = handFromClient.cardSlots;
+                        //     while (revertedHand.length < 30) {
+                        //         revertedHand.push(0);
+                        //     }
+                        //     socket.emit('draw-card-left-error',revertedHand ,gm.discard_piles[(handFromClient.playerIdx+3) % 4]);
+                        //     return;
+                        // }
 
                         const player = gm.players.get(playerIdx);
                         gm.players.set(playerIdx, {
@@ -149,9 +144,10 @@ function createGameSocket(gameRoomId) {
                             return;
                         }
 
-                        gm.drawCardMid( hand, targetSlotIdx );
+                        const midCount = gm.drawCardMid( hand, targetSlotIdx );
                         socket.emit('draw-card-mid-response', gm.players.get(playerIdx).cards);
-
+                        console.log(midCount);
+                        gameSocket.emit('draw-card-mid-response-to-all', midCount);
                     }) 
 
                     socket.on('open-hand-request-from-client', (perResults,cardSlots) => {
@@ -243,8 +239,8 @@ function createGameSocket(gameRoomId) {
                             ...gm.players.get(playerIdx),
                             cards: cardSlots
                         });
-                        gameSocket.emit('open-hand-response-to-all',gm.tables);
-                        socket.emit('open-hand-response-to-client',cardSlots);
+                        gameSocket.emit('open-hand-response-to-all', gm.tables);
+                        socket.emit('open-hand-response-to-client', cardSlots);
                     })
 
                     
