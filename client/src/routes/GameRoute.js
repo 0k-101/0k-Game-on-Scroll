@@ -72,12 +72,13 @@ export default function Game() {
             newHand.playerIdx = index;
             newHand.isTurn = !index;
             newHand.cardSlots = newCards;
-            newHand.tables = [
+            const newTables = [
                 Array.from({ length: 60 }, () => 0),
                 Array.from({ length: 60 }, () => 0),
                 Array.from({ length: 60 }, () => 0),
                 Array.from({ length: 60 }, () => 0)
             ]
+            setTables(InitialTables);
             setHand(newHand);
         })
         
