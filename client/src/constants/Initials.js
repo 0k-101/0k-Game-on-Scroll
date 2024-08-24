@@ -4,7 +4,7 @@ export const InitialHand = {
     isTurn: false,
     didDrawCard: true,
     hasOpened:false,
-    
+    okeyCardId: 200,
     cardSlots:Array.from({length: 30}, () => 0),
     leftPile: [],
     rightPile: [],

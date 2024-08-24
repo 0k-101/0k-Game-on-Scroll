@@ -192,7 +192,6 @@ const checkForSameColor = (hand, okeyId) => {
 
 const perFinder = (hand, okeyId) => {
     let points = 0
-    okeyId = 26 // mavi 13 
     let row1 = hand.splice(0, 15)
     let row2 = hand.splice(0, 15)
     let upper = spliceHand(row1, okeyId)
@@ -235,7 +234,7 @@ export default function PerFinder() {
     const [perResult, setPerResult] = useState({ pers: null, points: 0 })
     const { hand, _, socket } = useContext(HandContext);
     useEffect(() => {
-        setPerResult(perFinder([...hand.cardSlots]));
+        setPerResult(perFinder([...hand.cardSlots], hand.okeyCardId % 13 === 0 ? hand.okeyCardId -12 : hand.okeyCardId + 1));
     }, [hand])
 
     function handleOpenHand() {

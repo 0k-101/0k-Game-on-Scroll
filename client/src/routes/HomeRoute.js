@@ -20,7 +20,6 @@ export default function Home() {
     const connectWallet = async () => {
         if (account && network) {
             console.log(account)
-
         }
         if (window.ethereum) {
             try {
@@ -79,6 +78,7 @@ export default function Home() {
                         <NavLink
                             className='btn start-btn m-auto w-75 border-0 scaleUp'
                             to={'/waiting-room'}
+                            disabled={!account}
                         >
                         </NavLink>
                         <Button

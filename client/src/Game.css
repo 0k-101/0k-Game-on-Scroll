@@ -42,6 +42,7 @@
 .game-table-container.table-bl::before {
   content: "⚡ YOUR TABLE ⚡";
   color: yellow;
+  font-weight: 600;
   text-shadow: 2px 2px 2px black;
   position: absolute;
   bottom: -15%;
@@ -125,6 +126,7 @@
     left: -5%;
     width: 110%;
     height: 100%;
+    color: white;
   }
   
   .left-pile::before ,
@@ -138,6 +140,7 @@
   .left-pile {
     top: -50vh;
     right: 5vw;
+    padding: 2%;
     border: 2px black dashed;
   }
 
@@ -162,7 +165,7 @@
   
 .mid-pile {
     top: -50vh;
-    right: 5vw;
+    right: 0vw;
 }
 .mid-pile::before {
     content: "Draw";
@@ -247,6 +250,27 @@
   
   .game-card {
     transition: ease .5s;
+  }
+
+  .okey-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -7.5vw;
+    background-size: 100%;
+  }
+  .okey-card::before {
+    content: "Okey";
+    position: absolute;
+    top: -35%;
+    left: 10%;
+    font-family: 'alagard';
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: white;
+
+
   }
 
   /* Player Labels */

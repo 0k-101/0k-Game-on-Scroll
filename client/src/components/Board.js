@@ -56,6 +56,8 @@ export default function Board({midCounter}) {
                         style={{zIndex:0}} />
                         <Card cardId={200} cardType={CardTypes.IN_MID_PILE} undraggable={hand.didDrawCard}
                         style={{zIndex:1}} />
+                        <Card cardId={hand.okeyCardId} cardType={CardTypes.OKEY_CARD} undraggable={true}
+                        style={{zIndex:2}} />
                         <h2 className="mid-counter"
                         style={{zIndex:2}} 
                         >{midCounter}</h2>

@@ -53,20 +53,24 @@ class GameManager {
             const j = Math.floor(Math.random() * (i + 1));
             [arr[i], arr[j]] = [arr[j], arr[i]];
         })
-        const okeyCard = Math.floor(Math.random() * 53);
+        let okeyCard = Math.floor(Math.random() * 53);
+        while (okeyCard === 0 || okeyCard === 53) {
+            okeyCard = Math.floor(Math.random() * 53);
+        }
 
-        console.log(okeyCard);
+        cards.splice(cards.indexOf(okeyCard),1);
+        
         for (let [idx, player] of this.players) {
             // console.log(idx);
             const playerCards = cards.splice(0, idx === this.whose_turn ? 22 : 21);
-            this.#socket.to(player.player_id).emit('dealing-cards', playerCards, idx, this.round - 1);
+            this.#socket.to(player.player_id).emit('dealing-cards', playerCards, idx, this.round - 1,okeyCard);
             this.players.set(idx, {
                 ...player,
                 cards: playerCards,
             });
 
         }
-        this.#mid_pile = cards.splice(0, 4);
+        this.#mid_pile = cards;
         this.discard_piles = [
             [],
             [],

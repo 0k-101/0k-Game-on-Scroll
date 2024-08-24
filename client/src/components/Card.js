@@ -219,7 +219,7 @@ export default function Card(props) {
                 props.undraggable ? () => alert('You can only draw one card per turn!') : null
 
     return (
-        <div className='game-card'
+        <div className={props.cardType === CardTypes.OKEY_CARD  ? 'game-card okey-card' : 'game-card'}
             ref={drag}
             style={{
                 opacity: isDragging ? 0 : 1,

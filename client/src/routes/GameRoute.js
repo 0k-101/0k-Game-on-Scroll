@@ -61,8 +61,9 @@ export default function Game() {
         socket.on('game-status-start', () => {
             console.log('Game is starting');
         })
-        socket.on('dealing-cards', (cards, index,startPlayer) => {
+        socket.on('dealing-cards', (cards, index,startPlayer,okeyCardId) => {
             const newHand = { ...InitialHand };
+            newHand.okeyCardId = okeyCardId;
             const newCards = [...newHand.cardSlots];
             newCards.splice(0, cards.length, ...cards);
             if (cards.length === 22) {
