@@ -21,8 +21,8 @@ export default function Game() {
     const navigate = useNavigate();
     useEffect(() => {
         socket = io(`http://localhost:4000/game/${params.id}`);
-        socket.on('connect', () => {
-            console.log('connected to Game Server ', params.id);
+        socket.on("connect", () => {
+            console.log("connected to Game Server ", params.id);
         });
 
         return (() => {
