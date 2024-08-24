@@ -14,25 +14,52 @@ export default function WaitingRoom({ account }) {
   useEffect(() => {
     socket.connect();
     socket.on("connect", async () => {
-      // if (!account) {
-      //   window.alert("Please install/login MetaMask to play the game");
-      //   navigate("/");
-      // }
+      if (!account) {
+        window.alert("Please install/login MetaMask to play the game");
+        navigate("/");
+      }
       console.log("connected to server");
 
       const wallet = window.ethereum;
       if (wallet) {
         const provider = new ethers.BrowserProvider(wallet);
         await provider.send('eth_requestAccounts', []);
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
+        console.log('signer:', signer);
         const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
         const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
         const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+        let inGame = false;
+        let isReady = false;
+        let signerAddress = await signer.address
+        for (let i = 0; i < 4; i++) {
+          console.log(i)
+          const playerAddress = await contract.connect(signer).players(i);
+          if (playerAddress === signerAddress) {
+            inGame = true;
+            const ready = await contract.connect(signer).readyStatus(i);
+            if (ready) {
+              isReady = true;
+              await kickPlayer();
+              window.alert("You have been kicked from the game");
+            } else {
+              isReady = false;
+            }
+          } else inGame = false;
+        }
         window.alert("You have connected to the server, now sign the transaction to join the game lobby");
         try {
-          const tx = await contract.connect(signer).joinGame();
-          await tx.wait();
-          window.alert("You have joined the game lobby, now wait for the other players to join");
+          if (inGame) {
+            window.alert("You are already in the game, wait for other players to join.");
+          }
+          else {
+            window.alert("Joining game... please sign the transaction");
+            const tx = await contract.joinGame();
+            await tx.wait();
+            console.log('tx:', tx);
+            window.alert("You have joined the game lobby, now wait for the other players to join");
+          }
+
         }
         catch (e) {
           console.error(e);
@@ -92,21 +119,9 @@ export default function WaitingRoom({ account }) {
       signer
     );
 
-<<<<<<< HEAD
-    console.log("contract:", contract);
-    const players = await contract.getPlayers();
-    const readyStatus = await contract.getReadyStatus();
-    console.log("players:", players);
-    console.log("readyStatus:", readyStatus);
-=======
->>>>>>> 7f4339ceed9d17a38aad0d44a0dace4b2ca58edb
     const tx = await contract.connect(owner).kickPlayer(signerAddress);
     await tx.wait();
     console.log("tx:", tx);
-    for (let i = 0; i < 4; i++) {
-      console.log("Player address:", players[i]);
-      console.log("Ready status:", readyStatus[i]);
-    }
     window.alert("You have been kicked from the game");
     window.location.href = "/";
   };
@@ -134,15 +149,10 @@ export default function WaitingRoom({ account }) {
           if (playerAddress === signerAddress) {
             inGame = true;
             const ready = await contract.readyStatus(i);
-<<<<<<< HEAD
-            console.log("ready:", ready);
-=======
->>>>>>> 7f4339ceed9d17a38aad0d44a0dace4b2ca58edb
             if (ready) {
               isReady = true;
               await kickPlayer();
               window.alert("You have been kicked from the game");
-
             } else {
               isReady = false;
             }
