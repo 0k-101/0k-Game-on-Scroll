@@ -147,6 +147,12 @@ class GameManager {
         this.opened_hands = Array.from({length: 4}, () => false);
         this.didDrawCard = Array.from({length:4}, () => true);
         this.dealCards();
+        this.tables = [
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0)
+        ]
     }
 
 }
