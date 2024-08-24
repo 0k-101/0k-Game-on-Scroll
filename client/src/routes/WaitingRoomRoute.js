@@ -64,7 +64,7 @@ export default function WaitingRoom({ account }) {
         catch (e) {
           console.error(e);
           window.alert("Failed to join the game");
-          window.location.href = "/";
+          navigate('/');
         }
       }
 
@@ -73,7 +73,7 @@ export default function WaitingRoom({ account }) {
       setPlayerCounter(counter);
     });
     socket.on("game-start", (gameRoomId) => {
-      // setModalShow(true);
+      setModalShow(true);
       // navigate(`/game/${gameRoomId}`)
     });
 
@@ -124,7 +124,7 @@ export default function WaitingRoom({ account }) {
     await tx.wait();
     console.log("tx:", tx);
     window.alert("You have been kicked from the game");
-    window.location.href = "/";
+    navigate('/');
   };
 
   async function handleClick() {
@@ -179,10 +179,10 @@ export default function WaitingRoom({ account }) {
           console.log(
             "You are ready to play, now please deposit the payment"
           );
-          // const amount = ethers.parseEther("0.0001");
-          // const payment = await contract.deposit({ value: amount });
-          // await payment.wait();
-          // console.log("Your payment has been received");
+          const amount = ethers.parseEther("0.0001");
+          const payment = await contract.deposit({ value: amount });
+          await payment.wait();
+          console.log("Your payment has been received");
         }
       }
     } catch (e) {
@@ -190,7 +190,7 @@ export default function WaitingRoom({ account }) {
       window.alert("Failed to join game");
       await kickPlayer();
       window.alert("You have been kicked from the game");
-      window.location.href = "/";
+      navigate('/');
     }
 
   }
