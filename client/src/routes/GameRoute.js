@@ -150,13 +150,7 @@ export default function Game() {
             
             if (roundNum <= 4) {
                 setModalShow(true);
-                let clk = 45;
-                setInterval(()=> {
-                    setClock(clk => clk - 1);
-                    if (clk === 0) {
-                        setModalShow(false);
-                    }
-                },1000)
+                setClock(15);
             } else {
                 setEndModalShow(true);
             }
@@ -177,6 +171,25 @@ export default function Game() {
             socket.off('draw-card-mid-response-to-all');
         })
     }, [hand, navigate])
+
+    useEffect(()=> {
+        if (clock <= 0) {
+            if (modalShow) {
+                setModalShow(false);
+            } else if (endModalShow) {
+                return;
+            }
+        }
+
+        const timer = setInterval(() => {
+            setClock(clock => clock -1);
+        }, 1000);
+        
+        return (() => {
+            clearInterval(timer);
+        })
+
+    } ,[clock,modalShow,endModalShow])
     
     return (
         <div className="game-route-bg">

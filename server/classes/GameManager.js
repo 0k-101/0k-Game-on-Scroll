@@ -50,7 +50,7 @@ class GameManager {
                 cards: playerCards,
             });
         }
-        this.#mid_pile = cards.reverse();
+        this.#mid_pile = cards.splice(0, 4);
     }
 
     drawCardMid( hand,targetSlotIdx ) {
