@@ -290,8 +290,6 @@ function createGameSocket(gameRoomId) {
                         });
                         gameSocket.emit('next-turn-from-server',gm.whose_turn,gm.discard_piles);
                     })
-
-                    socket.on('next-round-request-from-client')
                     
 
 
