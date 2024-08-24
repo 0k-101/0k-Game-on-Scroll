@@ -50,6 +50,20 @@
     background-origin: border-box;
     background-size: contain;
 }
+
+.ready-btn {
+    position: absolute;
+    bottom:5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    width: 15%;
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: contain;
+    font-family: 'alagard' !important;
+    font-size: 2rem !important;
+}
 .start-btn:hover {
     background-image: url('./assets/menu/start-btn_hover.png');
 }

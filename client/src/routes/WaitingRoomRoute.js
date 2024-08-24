@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import socket from "../sockets/WaitingSocket.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
-export default function WaitingRoom() {
-  const [playerCounter, setPlayerCounter] = useState(0);
-  const navigate = useNavigate();
 
+import { Modal } from 'react-bootstrap';
+
+export default function WaitingRoom( {account}) {
+  const [playerCounter, setPlayerCounter] = useState(0);
+  const [modalShow, setModalShow] = useState(false);
+  const navigate = useNavigate();
+  
   useEffect(() => {
     socket.connect();
     socket.on("connect", async () => {
+      // if (!account) {
+      //   window.alert("Please install/login MetaMask to play the game");
+      //   navigate("/");
+      // }
       console.log("connected to server");
       //   try {
       //     const wallet = window.ethereum;
@@ -75,12 +83,15 @@ export default function WaitingRoom() {
       //     window.alert("You have been kicked from the game");
       //     window.location.href = "/";
       //   }
+    
+    
+    
     });
     socket.on("player-counter", (counter) => {
       setPlayerCounter(counter);
     });
     socket.on("game-start", (gameRoomId) => {
-      navigate(`/game/${gameRoomId}`);
+      setModalShow(true);
     });
 
     // socket.on('await-transaction', async () => {
@@ -151,6 +162,34 @@ export default function WaitingRoom() {
         Waiting for the other player to join... ({" "}
         <strong className="text-danger">{playerCounter}</strong>/4 )
       </h2>
+      <Modal show={modalShow} onHide={()=>setModalShow(false)}
+            dialogClassName="modal-dialog modal-xl"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            >
+            
+            <Modal.Body >
+                <div className="round-over-container text-center">
+                    <h2 className="round-over-content text-center mt-4">
+                      4 Players have matched together!
+                      <br/>
+                      <br/>
+                      Please Press the Button to Confirm Transaction!
+                      <br/>
+                      <br/>
+                      You'll be charged 0.001 Eth.
+                      <br/>
+                      <br/>
+                      If you win, you'll earn <strong style={{color:'yellow'}}>triple</strong><br/>
+                      <small>If you finish the game as 2nd, you'll get your entry fee back</small>
+                      <br/> 
+                      <br/> 
+                      <strong style={{color:'yellow'}}>Good Luck!!..</strong>
+                      </h2>
+                    <button type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>
+                </div>
+            </Modal.Body>
+        </Modal>
       <NavLink
         className="btn btn-outline-warning go-back-btn m-auto w-25"
         to={"/"}

@@ -22,7 +22,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/game/:id" element={<Game />} />
-				<Route path="/waiting-room" element={<WaitingRoom />} />
+				<Route path="/waiting-room" element={<WaitingRoom account={account} />} />
 				<Route path='*' element={<NotFound />} />
 				<Route path='/test' element={<Test />} />
 			</Routes>

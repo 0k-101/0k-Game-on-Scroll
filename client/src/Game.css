@@ -390,9 +390,10 @@
     top: 10%;
     left: 10%;
     width: 80%;
-    height: 80%;
+    height: 50%;
     background-color: transparent;
     color: white;
+    font-family: 'alagard';
   }
   ul {
     list-style-type: none;
