@@ -57,7 +57,9 @@ export default function Game() {
             const newHand = { ...hand };
             const newCards = [...hand.cardSlots];
             newCards.splice(0, cards.length, ...cards);
-            newHand.didDrawCard = cards.length === 22;
+            if (cards.length === 22) {
+                newHand.didDrawCard = true;
+            }
             // console.log(`cards received : `);
             // console.log(newCards);
             newHand.playerIdx = index;
@@ -70,8 +72,9 @@ export default function Game() {
             const newHand = { ...hand };
             newHand.whoseTurn = whoseTurn;
             newHand.isTurn = whoseTurn === hand.playerIdx;
-            newHand.didDrawCard = !newHand.isTurn;
-            
+            if (isTurn) {
+                newHand.didDrawCard = false;
+            }
             newHand.rightPile = discard_piles[newHand.playerIdx]
             newHand.oppRightPile = discard_piles[(newHand.playerIdx + 1) % 4]
             newHand.leftPile = discard_piles[(newHand.playerIdx + 3) % 4]
@@ -97,7 +100,8 @@ export default function Game() {
             newHand.oppRightPile = discard_piles[(newHand.playerIdx + 1) % 4];
             newHand.leftPile = discard_piles[(newHand.playerIdx + 3) % 4];
             newHand.oppLeftPile = discard_piles[(newHand.playerIdx + 2) % 4];
-            newHand.didDrawCard = pIdx === hand.playerIdx;
+            
+            newHand.didDrawCard = true;
             setHand(newHand);
         })
 
@@ -111,9 +115,15 @@ export default function Game() {
             setHand(newHand);
         })
         
-        socket.on('draw-card-mid-response', newCardSlots => {
+        socket.on('draw-card-mid-response', (drawnCardId) => {
             const newHand = { ...hand };
-            newHand.cardSlots = newCardSlots;
+
+            for (let slot of newHand.cardSlots) {
+                if (slot === 200) {
+                    slot = drawnCardId;
+                    break;
+                }
+            }
             newHand.didDrawCard = true;
             setHand(newHand);
         })
@@ -126,6 +136,10 @@ export default function Game() {
             newHand.cardSlots = newCardSlots;
             newHand.hasOpened = true;
             setHand(newHand);
+        })
+
+        socket.on('err',e => {
+            console.log(e);
         })
         
         return (() => {
@@ -140,6 +154,7 @@ export default function Game() {
             socket.off('draw-card-left-error');
             socket.off('open-hand-response-to-all');
             socket.off('open-hand-response-to-client');
+            socket.off('err');
         })
     }, [hand, navigate])
     

@@ -252,7 +252,8 @@ export default function PerFinder() {
             <h5 className={perResult.points >= 101 ? `per-count-text per-openable-text` : `per-count-text`}>{perResult.pers?.length ? perResult.pers?.length:0 }</h5> 
                 <br/>
             <h5 className={perResult.points >= 101 ? `per-pts-text per-openable-text` : `per-pts-text`} >{ perResult.points ? perResult.points : 0 } </h5>
-            <button className={`btn btn-outline-${perResult.points>= 101 ? `success`:`danger`} open-hand-btn`} disabled={perResult.points < 101 || !hand.isTurn} onClick={handleOpenHand}>Open Hand</button>
+            <button className={`btn btn-outline-${perResult.points>= 101 ? `success`:`danger`} open-hand-btn`}
+                disabled={perResult.points < 101 || !hand.isTurn || !hand.didDrawCard } onClick={handleOpenHand}>Open Hand</button>
         </>
     );
 }
