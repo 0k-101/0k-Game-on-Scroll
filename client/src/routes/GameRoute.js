@@ -171,10 +171,11 @@ export default function Game() {
         socket.on('end-game',(totalScores)=>{
             setTotalScores([...totalScores]);
             setEndModalShow(true);
-            socket.disconnect();
             setTimeout(() => {
                 navigate('/');
-            }, 3000);
+                socket.disconnect();
+            }, 20000);
+            setClock(20);
         })
         
         return (() => {
@@ -254,12 +255,12 @@ export default function Game() {
                                     <h2>Round Number: {roundInfos.roundNum}</h2>
                                     <h3>Round Scores</h3>
                                     <ul>
-                                        <li>Player 1: {roundInfos.roundScores[0]}</li>
-                                        <li>Player 2: {roundInfos.roundScores[1]}</li>
-                                        <li>Player 3: {roundInfos.roundScores[2]}</li>
-                                        <li>Player 4: {roundInfos.roundScores[3]}</li>
+                                        <li>Player 1: {totalScores[0]}</li>
+                                        <li>Player 2: {totalScores[1]}</li>
+                                        <li>Player 3: {totalScores[2]}</li>
+                                        <li>Player 4: {totalScores[3]}</li>
                                     </ul>
-                                    <h3>Next Round will start in {clock} seconds</h3>
+                                    <h3>Game will end in {clock} seconds. You'll be redirected!</h3>
                                 </div>
                             </div>
                         </Modal.Body>
