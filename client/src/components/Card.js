@@ -3,6 +3,9 @@ import { HandContext } from '../routes/GameRoute';
 import { useContext } from 'react';
 import CardTypes from '../constants/CardTypes';
 
+// will be deleted
+// import { HandContext } from '../routes/TestRoute';
+
 export default function Card(props) {
     const { hand, setHand, socket } = useContext(HandContext);
 
@@ -53,7 +56,7 @@ export default function Card(props) {
                 if (props.cardType === CardTypes.IN_LEFT_PILE) {
                     newHand.leftPile.splice(newHand.leftPile.length-1, 1); // Remove the last card from the left pile
                     newHand.didDrawCard = true;
-                    emitDrawCardLeft(socket,newHand);
+                    // edited : emitDrawCardLeft(socket,newHand);
                 } else if (props.cardType === CardTypes.IN_HAND || props.cardType === CardTypes.IN_MID_PILE) {
                     let sourceSlotIdx;
                     if (props.cardType === CardTypes.IN_MID_PILE) {
@@ -101,6 +104,10 @@ export default function Card(props) {
                     if (props.cardType === CardTypes.IN_MID_PILE) {
                         newHand.didDrawCard = true;
                         drawCardFromMid(socket,newHand,targetSlotIdx);
+                        return;
+                    } else if ( props.cardType === CardTypes.IN_LEFT_PILE) {
+                        emitDrawCardLeft(socket,newHand);
+                        setHand(newHand);
                         return;
                     }
                 } else {
@@ -165,8 +172,9 @@ export default function Card(props) {
                 // set the newHand
                 if (props.cardType === CardTypes.IN_MID_PILE) {
                     newHand.didDrawCard = true;
-                    console.log()
                     drawCardFromMid(socket,newHand);
+                } else if (props.cardType === CardTypes.IN_LEFT_PILE) {
+                    emitDrawCardLeft(socket,newHand);
                 }
                 setHand(newHand);
             

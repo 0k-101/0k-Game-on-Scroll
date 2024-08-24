@@ -1,43 +1,271 @@
 .game-overview-container {
     margin: 15px 0 0 15px;
-    height: 70vh;
-    border: 2px solid #000;
-    background: url('./assets/game/game-bg.png') no-repeat ;
+    height: 63vh;
+    /* border: 2px solid #000; */
     background-repeat: round;
+    transform: rotate3d(5, 20, 1, 25deg);
+    right: 0;
 }
 .game-table-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
+    height: 100%;
+    /* border: #452312 2px solid; */
 }
 .game-table-container {
+    display: flex;
+    flex-wrap: wrap;
     width: 75%;
     height: 90%;
-    border: 1px solid #452312;    
+    /* border: 3px solid aqua;     */
     position: relative;
-    display:grid;
-    grid-template-columns: repeat(10, 1fr);
-    row-gap: .2vh;
-    column-gap: .1vw;
-    padding: 4px 10px 4px 6px;
+    top:5%;
+
 }
 .game-table-container.table-ul {
+    padding-top: .75%;
+    padding-bottom: 1%;  
+  padding-left: 1.5%;
+    padding-right: 2.3%;
     left: 2%;
 }
 .game-table-container.table-ur {
+    padding-left: 2.5%;
+    padding-right: .5%;
     right: 14%;
 }
 .game-table-container.table-bl {
+    padding-left: 1.4%;
+    padding-right: 1.25%;
     left:14%;
 }
 .game-table-container.table-br {
+  padding-left:1.7%;
     right: 2%;
 }
 
 /* IN GAME */
 .table-slot {
     position: relative;
-
-    border: 2px solid white;
-    background-color: tomato;
+    transform: rotate3d(5, 20, 1, 5deg);
+    height: 19.5%;
+    top:1%;
+    
+    
+    flex: 0 0 8.2%; /* 8.33% = 1/12 of 100% , 12 tiles on each row */
+    /* border: 2px solid white; */
+    /* background-color: tomato; */
 } 
+
+.table-slot > img {
+    width: 97%;
+    height: 98%;
+    position: relative;
+    
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: cover;
+}
+
+.board-container {
+    position: relative;
+    margin: 0 auto;
+    width: 80%;
+    height: 30vh;
+    top: 69vh;
+
+    padding: 5px 50px 5px 50px; /* needed check-on later */
+    background: transparent;
+  }
+  
+  .flex-container {
+    display: flex;
+    flex-wrap:wrap;
+    row-gap: 15px;
+    column-gap: .2%;
+    width: 100%;
+    height: 50%;
+  }
+  
+  .card-slot {
+    position: relative;
+    top: 6px;
+    width: 100%;
+    height: 90%;
+    
+    flex:0 0 6.48%; /* 6.48% = 1/15 of 97.2% , 15 tiles on each row and 14 .2% gaps */
+    display: flex;
+    
+    /* border: 2px dashed white; */
+    
+  }
+  .card-slot::before {
+    content:"";
+    background: url('./assets/game/card-slot.png') center no-repeat;
+    background-size: 100%;
+    position: absolute;
+    top: 10px;
+    left: -5%;
+    width: 110%;
+    height: 100%;
+  }
+  
+  .left-pile::before ,
+  .mid-pile::before ,
+  .right-pile::before ,
+  .opp-left-pile::before ,
+  .opp-right-pile::before  {
+    background: none;
+  }
+  
+  .left-pile {
+    top: -50vh;
+    right: 5vw;
+    border: 2px black dashed;
+  }
+
+  .left-pile::before {
+    background: none;
+    content: "Draw";
+    position: absolute;
+    top: -35%;
+    left: 10%;
+    width: 100%;
+    font-family: 'alagard';
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  
+  .opp-left-pile {
+    top: -90vh;
+    right:10vw;
+    border: 2px black dashed;
+    visibility: hidden;
+  }
+  
+.mid-pile {
+    top: -50vh;
+    right: 5vw;
+}
+.mid-pile::before {
+    content: "Draw";
+    position: absolute;
+    top: -35%;
+    left: 10%;
+    width: 100%;
+    font-family: 'alagard';
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.mid-file::after {
+    content: "Random";
+    position: absolute;
+    top: -35%;
+    left: 10%;
+    width: 100%;
+    font-family: 'alagard';
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+  .right-pile {
+    top: -20vh;
+    left: 63vw;
+    border: 2px black dashed;
+  }
+  .right-pile::before {
+    background: none;
+    content: "Discard";
+    position: absolute;
+    top: -35%;
+    left: -10%;
+    width: 200%;
+    font-family: 'alagard';
+    font-weight: 600;
+    font-size: 1.5rem;
+    
+}
+  .opp-right-pile {
+    top: -90vh;
+    left: 55vw;
+    border: 2px black dashed;
+    visibility: hidden;
+  }
+  
+  .left-pile > .game-card,
+  .mid-pile > .game-card,
+  .right-pile > .game-card,
+  .opp-left-pile > .game-card,
+  .opp-right-pile > .game-card {
+    position: absolute;
+    width: 110%;
+    height: 110%;
+  }
+  
+  .left-pile > .game-card > img,
+  .mid-pile > .game-card > img,
+  .right-pile > .game-card > img,
+  .opp-left-pile > .game-card > img,
+  .opp-right-pile > .game-card > img {
+    animation: none;
+    top:0;
+    opacity: 1;
+  }
+  
+  
+  
+  .game-card > img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -25px;
+    opacity: .85;
+    
+    background-color: transparent;
+    background-origin: border-box;
+    background-size: cover;
+    
+    /* animation: cardFloat 5s infinite; */
+    user-select: none; /* disable text selection won't be needed probably */
+  }
+  
+  .game-card {
+    transition: ease .5s;
+  }
+
+  /* Player Labels */
+
+.label-container {
+    position: absolute;
+    /* border: 2px solid black; */
+    top: 10vh;
+    left: 5vw;
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+    row-gap: 2vh;
+    column-gap: 2vw;
+  }
+  
+  h3.player-label {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 2px brown;
+  }
+  h3.player-label.label-turn {
+    color: yellow;
+    text-shadow: 2px 2px 2px black;
+  }
+  h3.player-label.label-turn::before {
+    content: "⚡";
+    color: red;
+    text-shadow: 2px 2px 2px black;
+  }
+  
+  .label-bot {
+  }
+  .label-right {
+  }
+  .label-left {
+  }
+  .label-top {
+  }

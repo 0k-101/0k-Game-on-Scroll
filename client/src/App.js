@@ -9,6 +9,7 @@ import OverviewPanel from './components/OverviewPanel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes } from 'react-router-dom';
 import { createContext,useState } from 'react'
+import Test from './routes/TestRoute';
 
 export const AccountContext = createContext();
 
@@ -23,7 +24,7 @@ function App() {
 				<Route path="/game/:id" element={<Game />} />
 				<Route path="/waiting-room" element={<WaitingRoom />} />
 				<Route path='*' element={<NotFound />} />
-				<Route path='/test' element={<OverviewPanel />} />
+				<Route path='/test' element={<Test />} />
 			</Routes>
 		</AccountContext.Provider>
 	);

@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import { HandContext } from "../routes/GameRoute";
 
+
+// will be deleted
+// import { HandContext } from "../routes/TestRoute";
+
 import CardTypes from "../constants/CardTypes";
 
 import Card from "./Card";

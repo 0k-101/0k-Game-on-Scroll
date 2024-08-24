@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
 
 import Board from '../components/Board';
 import PerFinder from '../components/PerFinder';
+import OverviewPanel from '../components/OverviewPanel';
 import PlayerLabels from '../components/PlayerLabels'
 import {InitialHand,InitialTables} from "../constants/Initials";
 
@@ -79,13 +80,14 @@ export default function Game() {
             console.log('Client: Next Turn Processed!');
         })
         
-        socket.on('next-turn-error', (cards,discardPile) => {
+        socket.on('next-turn-error', (err,cards,discardPile) => {
             // @TODO:
             // show up a toast notification
-            console.error('Next Turn Error');
+            console.error(err);
             const newHand = { ...hand };
             newHand.cardSlots = cards;
             newHand.rightPile = discardPile;
+            console.log(newHand.rightPile);
             setHand(newHand);
         })
         
@@ -99,7 +101,7 @@ export default function Game() {
             newHand.didDrawCard = pIdx === hand.playerIdx;
             setHand(newHand);
         })
-        
+
         socket.on('draw-card-left-error', (newCardsSlots,newLeftPile) => {
             // @TODO:
             // show up a toast notification
@@ -137,7 +139,8 @@ export default function Game() {
             <HandContext.Provider value={{ hand, setHand, socket, tables,setTables }}>
                 <DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
-                    <PerFinder />
+                    <OverviewPanel />
+                    {/* <PerFinder /> */}
                     <Board />
                 </DndProvider>
             </HandContext.Provider>

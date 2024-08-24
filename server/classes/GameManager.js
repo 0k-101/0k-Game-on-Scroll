@@ -51,7 +51,6 @@ class GameManager {
             });
         }
         this.#mid_pile = cards.reverse();
-        console.log(this.players.get(1).cards);
     }
 
     drawCardMid( hand,targetSlotIdx ) {

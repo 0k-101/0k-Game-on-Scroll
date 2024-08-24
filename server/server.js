@@ -113,6 +113,8 @@ function createGameSocket(gameRoomId) {
                             ...player,
                             cards: handFromClient.cardSlots
                         })
+                        console.log(`new hand : `);
+                        console.log(gm.players.get(playerIdx).cards);
                         gm.discard_piles[(handFromClient.playerIdx+3) % 4].pop()
                         gm.didDrawCard[playerIdx] = true;
                         gameSocket.emit('draw-card-left-from-server',gm.discard_piles,playerIdx); 
@@ -189,7 +191,7 @@ function createGameSocket(gameRoomId) {
                             }
                         } catch (e) {
                             console.log(e);
-                            socket.emit('next-turn-error', gm.players.get(playerIdx).cards, gm.discard_piles[playerIdx]);
+                            socket.emit('next-turn-error',e, gm.players.get(playerIdx).cards, gm.discard_piles[playerIdx]);
                             return;
                         }
 
