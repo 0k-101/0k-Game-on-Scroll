@@ -14,67 +14,67 @@ export default function WaitingRoom({ account }) {
   useEffect(() => {
     socket.connect();
     socket.on("connect", async () => {
-      // if (!account) {
-      //   window.alert("Please install/login MetaMask to play the game");
-      //   navigate("/");
+      // // if (!account) {
+      // //   window.alert("Please install/login MetaMask to play the game");
+      // //   navigate("/");
+      // // }
+      // // console.log("connected to server");
+
+      // const wallet = window.ethereum;
+      // if (wallet) {
+      //   const provider = new ethers.BrowserProvider(wallet);
+      //   await provider.send('eth_requestAccounts', []);
+      //   const signer = await provider.getSigner();
+      //   console.log('signer:', signer);
+      //   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+      //   const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
+      //   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+      //   let inGame = false;
+      //   let isReady = false;
+      //   let signerAddress = await signer.address
+      //   for (let i = 0; i < 4; i++) {
+      //     console.log(i)
+      //     const playerAddress = await contract.connect(signer).players(i);
+      //     if (playerAddress === signerAddress) {
+      //       inGame = true;
+      //       const ready = await contract.connect(signer).readyStatus(i);
+      //       if (ready) {
+      //         isReady = true;
+      //         await kickPlayer();
+      //         window.alert("You have been kicked from the game");
+      //       } else {
+      //         isReady = false;
+      //       }
+      //     } else inGame = false;
+      //   }
+      //   window.alert("You have connected to the server, now sign the transaction to join the game lobby");
+      //   try {
+      //     if (inGame) {
+      //       window.alert("You are already in the game, wait for other players to join.");
+      //     }
+      //     else {
+      //       window.alert("Joining game... please sign the transaction");
+      //       const tx = await contract.joinGame();
+      //       await tx.wait();
+      //       console.log('tx:', tx);
+      //       window.alert("You have joined the game lobby, now wait for the other players to join");
+      //     }
+
+      //   }
+      //   catch (e) {
+      //     console.error(e);
+      //     window.alert("Failed to join the game");
+      //     navigate('/');
+      //   }
       // }
-      // console.log("connected to server");
-
-      const wallet = window.ethereum;
-      if (wallet) {
-        const provider = new ethers.BrowserProvider(wallet);
-        await provider.send('eth_requestAccounts', []);
-        const signer = await provider.getSigner();
-        console.log('signer:', signer);
-        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-        const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
-        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-        let inGame = false;
-        let isReady = false;
-        let signerAddress = await signer.address
-        for (let i = 0; i < 4; i++) {
-          console.log(i)
-          const playerAddress = await contract.connect(signer).players(i);
-          if (playerAddress === signerAddress) {
-            inGame = true;
-            const ready = await contract.connect(signer).readyStatus(i);
-            if (ready) {
-              isReady = true;
-              await kickPlayer();
-              window.alert("You have been kicked from the game");
-            } else {
-              isReady = false;
-            }
-          } else inGame = false;
-        }
-        window.alert("You have connected to the server, now sign the transaction to join the game lobby");
-        try {
-          if (inGame) {
-            window.alert("You are already in the game, wait for other players to join.");
-          }
-          else {
-            window.alert("Joining game... please sign the transaction");
-            const tx = await contract.joinGame();
-            await tx.wait();
-            console.log('tx:', tx);
-            window.alert("You have joined the game lobby, now wait for the other players to join");
-          }
-
-        }
-        catch (e) {
-          console.error(e);
-          window.alert("Failed to join the game");
-          navigate('/');
-        }
-      }
 
     });
     socket.on("player-counter", (counter) => {
       setPlayerCounter(counter);
     });
     socket.on("game-start", (gameRoomId) => {
-      setModalShow(true);
-      // navigate(`/game/${gameRoomId}`)
+      // setModalShow(true);
+      navigate(`/game/${gameRoomId}`)
     });
 
     // socket.on('await-transaction', async () => {
