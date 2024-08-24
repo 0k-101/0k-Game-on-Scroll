@@ -64,6 +64,21 @@
     font-family: 'alagard' !important;
     font-size: 2rem !important;
 }
+.loader {
+    position: absolute;
+    bottom:15%;
+    left: 50%;
+}
+.loader-text {
+    position: absolute;
+    bottom:5%;
+    font-family: 'alagard' !important;
+    color:bisque;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem !important;
+}
+
 .start-btn:hover {
     background-image: url('./assets/menu/start-btn_hover.png');
 }

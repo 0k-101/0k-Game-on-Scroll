@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import socket from "../sockets/WaitingSocket.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 
-import { Modal } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 
 export default function WaitingRoom({ account }) {
   const [playerCounter, setPlayerCounter] = useState(0);
   const [modalShow, setModalShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,26 @@ export default function WaitingRoom({ account }) {
       // }
       console.log("connected to server");
 
-
+      const wallet = window.ethereum;
+      if (wallet) {
+        const provider = new ethers.BrowserProvider(wallet);
+        await provider.send('eth_requestAccounts', []);
+        const signer = provider.getSigner();
+        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+        const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
+        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+        window.alert("You have connected to the server, now sign the transaction to join the game lobby");
+        try {
+          const tx = await contract.connect(signer).joinGame();
+          await tx.wait();
+          window.alert("You have joined the game lobby, now wait for the other players to join");
+        }
+        catch (e) {
+          console.error(e);
+          window.alert("Failed to join the game");
+          window.location.href = "/";
+        }
+      }
 
     });
     socket.on("player-counter", (counter) => {
@@ -51,7 +71,7 @@ export default function WaitingRoom({ account }) {
       socket.off("game-start");
       socket.disconnect();
     };
-  }, [navigate]);
+  }, [navigate, account]);
 
   const kickPlayer = async () => {
     const wallet = window.ethereum;
@@ -72,11 +92,14 @@ export default function WaitingRoom({ account }) {
       signer
     );
 
+<<<<<<< HEAD
     console.log("contract:", contract);
     const players = await contract.getPlayers();
     const readyStatus = await contract.getReadyStatus();
     console.log("players:", players);
     console.log("readyStatus:", readyStatus);
+=======
+>>>>>>> 7f4339ceed9d17a38aad0d44a0dace4b2ca58edb
     const tx = await contract.connect(owner).kickPlayer(signerAddress);
     await tx.wait();
     console.log("tx:", tx);
@@ -89,6 +112,7 @@ export default function WaitingRoom({ account }) {
   };
 
   async function handleClick() {
+    setLoading(true);
     try {
       const wallet = window.ethereum;
       if (wallet) {
@@ -110,7 +134,10 @@ export default function WaitingRoom({ account }) {
           if (playerAddress === signerAddress) {
             inGame = true;
             const ready = await contract.readyStatus(i);
+<<<<<<< HEAD
             console.log("ready:", ready);
+=======
+>>>>>>> 7f4339ceed9d17a38aad0d44a0dace4b2ca58edb
             if (ready) {
               isReady = true;
               await kickPlayer();
@@ -175,22 +202,29 @@ export default function WaitingRoom({ account }) {
         <Modal.Body >
           <div className="round-over-container text-center">
             <h2 className="round-over-content text-center mt-4">
-              4 Players have matched together!
+              <strong style={{ color: 'red' }}>4 Players Found !</strong>
               <br />
               <br />
               Please Press the Button to Confirm Transaction!
               <br />
               <br />
-              You'll be charged 0.001 Eth.
+              You'll be charged <strong style={{ color: 'gold' }}>0.001 Eth</strong> !
               <br />
               <br />
-              If you win, you'll earn <strong style={{ color: 'yellow' }}>triple</strong><br />
+              If you win, you'll earn <strong style={{ color: 'gold' }}>triple<small style={{ fontSize: '1.5rem' }}> (x3)</small></strong><br />
               <small>If you finish the game as 2nd, you'll get your entry fee back</small>
               <br />
               <br />
-              <strong style={{ color: 'yellow' }}>Good Luck!!..</strong>
+              <strong style={{ color: 'gold' }}>Good Luck!!..</strong>
             </h2>
-            <button onClick={handleClick} type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>
+
+            {!loading ?
+              <button onClick={handleClick} type="button" className="btn btn-outline-primary ready-btn" > Ready! </button> :
+              <>
+                <Spinner className="loader" animation="border" variant="warning" />
+                <h2 className="loader-text"> Waiting for other players to complete their transactions</h2>
+              </>
+            }
           </div>
         </Modal.Body>
       </Modal>
