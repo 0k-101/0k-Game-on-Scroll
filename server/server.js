@@ -146,7 +146,6 @@ function createGameSocket(gameRoomId) {
 
                         const midCount = gm.drawCardMid( hand, targetSlotIdx );
                         socket.emit('draw-card-mid-response', gm.players.get(playerIdx).cards);
-                        console.log(midCount);
                         gameSocket.emit('draw-card-mid-response-to-all', midCount);
                     }) 
 
@@ -292,6 +291,7 @@ function createGameSocket(gameRoomId) {
                         gameSocket.emit('next-turn-from-server',gm.whose_turn,gm.discard_piles);
                     })
 
+                    socket.on('next-round-request-from-client')
                     
 
 

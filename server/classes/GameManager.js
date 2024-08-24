@@ -85,16 +85,68 @@ class GameManager {
     }
 
     nextTurn(){
-        for (let [idx,player] of this.players) {
-            if (player.cards.length === 0 ) {
-                // end round
-                // case of player with idx -202
-            }
+        if (this.players.get(this.whose_turn).cards.length === 0 ) {
+            this.endRound();
         }
+        if (this.#mid_pile.length === 0) {
+            this.endRound();
+        }
+        
 
         this.whose_turn = (this.whose_turn + 1) % 4;
         this.didDrawCard[this.whose_turn] = false;
         this.#socket.emit('next-turn-from-server', this.whose_turn,this.discard_piles);
+    }
+
+    endRound(){
+        this.round++;
+        const thisTurnScoreSheet = [];
+        for (let [idx,player] of this.players) {
+            // okey cards value won't be added !!
+            if (this.opened_hands[idx]) {
+                if (player.cards.length === 0) {
+                    this.players.set(idx, {
+                        ...player,
+                        score: (this.players.get(idx).score - 101)
+                    })
+                    thisTurnScoreSheet[idx] = -101;
+                    continue;
+                }
+                let score = 0;
+                for (let card of player.cards) {
+                    const cardScore = card % 13 === 0 ? 13 : card % 13;
+                    score += cardScore;
+                }
+                this.players.set(idx, {
+                    ...player,
+                    score: (this.players.get(idx).score + score)
+                })
+                thisTurnScoreSheet[idx] = score;
+            } else {
+                this.players.set(idx, {
+                    ...player,
+                    score: (this.players.get(idx).score + 202)
+                })
+                thisTurnScoreSheet[idx] = 202;
+            }
+        }
+
+        this.#socket.emit('end-round',this.round, thisTurnScoreSheet);
+        setTimeout(() => {
+            if( this.round < 4) {
+                nextRound();
+            } else {
+                endGame();
+            }
+        }, 45000);
+
+        
+    }
+    nextRound(){
+        this.whose_turn = this.round-1;
+        this.opened_hands = Array.from({length: 4}, () => false);
+        this.didDrawCard = Array.from({length:4}, () => true);
+        this.dealCards();
     }
 
 }

@@ -7,6 +7,7 @@ import PerFinder from '../components/PerFinder';
 import PlayerLabels from '../components/PlayerLabels'
 import {InitialHand,InitialTables} from "../constants/Initials";
 import OverviewPanel from '../components/OverviewPanel';
+import Game from "./GameRoute";
 
 
 export const TestContext = createContext();
@@ -17,13 +18,14 @@ export default function Test(){
     const [tables,setTables] = useState(InitialTables);  
 
     return (
-        <TestContext.Provider value={{hand}}>
-            <DndProvider backend={HTML5Backend}>
-                    <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
-                    <OverviewPanel />
-                    <PerFinder />
-                    <Board />
-            </DndProvider>
-        </TestContext.Provider>
+        // <TestContext.Provider value={{hand}}>
+        //     <DndProvider backend={HTML5Backend}>
+        //             <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
+        //             <OverviewPanel />
+        //             <PerFinder />
+        //             <Board />
+        //     </DndProvider>
+        // </TestContext.Provider>
+        <Game />
     )
 }
