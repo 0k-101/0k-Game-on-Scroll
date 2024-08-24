@@ -44,7 +44,7 @@ class GameManager {
         for (let [idx,player] of this.players) {
             // console.log(idx);
             const playerCards = cards.splice(0, idx === this.whose_turn ? 22 : 21);
-            this.#socket.to(player.player_id).emit('dealing-cards', playerCards,idx);
+            this.#socket.to(player.player_id).emit('dealing-cards', playerCards,idx,this.round-1);
             this.players.set(idx, {
                 ...player,
                 cards: playerCards,

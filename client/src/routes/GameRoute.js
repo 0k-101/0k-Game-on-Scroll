@@ -60,7 +60,7 @@ export default function Game() {
         socket.on('game-status-start', () => {
             console.log('Game is starting');
         })
-        socket.on('dealing-cards', (cards, index) => {
+        socket.on('dealing-cards', (cards, index,startPlayer) => {
             const newHand = { ...InitialHand };
             const newCards = [...newHand.cardSlots];
             newCards.splice(0, cards.length, ...cards);
@@ -70,7 +70,8 @@ export default function Game() {
             // console.log(`cards received : `);
             // console.log(newCards);
             newHand.playerIdx = index;
-            newHand.isTurn = !index;
+            newHand.whoseTurn = startPlayer;
+            newHand.isTurn = startPlayer === newHand.playerIdx;
             newHand.cardSlots = newCards;
             const newTables = [
                 Array.from({ length: 60 }, () => 0),
