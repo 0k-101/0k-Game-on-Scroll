@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 import Per from '../constants/Per'
-import { useState,useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { HandContext } from '../routes/GameRoute'
 
 // will be deleted
@@ -32,6 +32,7 @@ const spliceHand = (hand, okeyId) => {
     if (cleanHand.length > 2) {
         cleanHands.push(cleanHand)
     }
+    console.log('cleanHands', cleanHands)
     return cleanHands
 }
 
@@ -46,6 +47,7 @@ const checkForSequence = (hand, okeyId) => {
             cards.push(new Card(card % 52 === 0 ? 52 : card % 52, false))
         }
     })
+    console.log('cards', cards)
     for (let i = 0; i < cards.length - 1; i++) {
         if (cards[i].cardId % 52 === okeyId && cards[i + 1].cardId % 52 === okeyId && cards[i].isFakeOkey === false && cards[i + 1].isFakeOkey === false) {
             if (i === 0) {
@@ -196,7 +198,6 @@ const perFinder = (hand, okeyId) => {
     let upper = spliceHand(row1, okeyId)
     let lower = spliceHand(row2, okeyId)
     let pers = []
-
     if (upper.length === 0 && lower.length === 0) {
         return []
     }
@@ -231,16 +232,16 @@ const perFinder = (hand, okeyId) => {
     return ({ pers, points })
 }
 export default function PerFinder() {
-    const [ perResult,setPerResult ] = useState( { pers:null,points:0 } )
-    const { hand,_,socket } = useContext(HandContext);
-    useEffect (()=>{
+    const [perResult, setPerResult] = useState({ pers: null, points: 0 })
+    const { hand, _, socket } = useContext(HandContext);
+    useEffect(() => {
         setPerResult(perFinder([...hand.cardSlots]));
-    },[hand])
+    }, [hand])
 
-    function handleOpenHand(){
-        console.log('open hand request');  
+    function handleOpenHand() {
+        console.log('open hand request');
         if (hand.isTurn && perResult.points >= 101) {
-            socket.emit('open-hand-request-from-client',perResult,hand.cardSlots);
+            socket.emit('open-hand-request-from-client', perResult, hand.cardSlots);
         } else {
             // throw alert
             console.error('You cannot open your hand with these pers!');
@@ -249,11 +250,11 @@ export default function PerFinder() {
 
     return (
         <>
-            <h5 className={perResult.points >= 101 ? `per-count-text per-openable-text` : `per-count-text`}>{perResult.pers?.length ? perResult.pers?.length:0 }</h5> 
-                <br/>
-            <h5 className={perResult.points >= 101 ? `per-pts-text per-openable-text` : `per-pts-text`} >{ perResult.points ? perResult.points : 0 } </h5>
-            <button className={`btn btn-outline-${perResult.points>= 101 ? `success`:`danger`} open-hand-btn`}
-                disabled={perResult.points < 101 || !hand.isTurn || !hand.didDrawCard } onClick={handleOpenHand}>Open Hand</button>
+            <h5 className={perResult.points >= 101 ? `per-count-text per-openable-text` : `per-count-text`}>{perResult.pers?.length ? perResult.pers?.length : 0}</h5>
+            <br />
+            <h5 className={perResult.points >= 101 ? `per-pts-text per-openable-text` : `per-pts-text`} >{perResult.points ? perResult.points : 0} </h5>
+            <button className={`btn btn-outline-${perResult.points >= 101 ? `success` : `danger`} open-hand-btn`}
+                disabled={perResult.points < 101 || !hand.isTurn || !hand.didDrawCard} onClick={handleOpenHand}>Open Hand</button>
         </>
     );
 }

@@ -19,7 +19,7 @@ export default function Card(props) {
         end: (item, monitor) => {
             const dropResult = monitor.getDropResult();
 
-            if (!dropResult && (props.cardType === CardTypes.IN_LEFT_PILE || props.cardType === CardTypes.IN_MID_PILE)) { 
+            if (!dropResult && (props.cardType === CardTypes.IN_LEFT_PILE || props.cardType === CardTypes.IN_MID_PILE)) {
                 // If the card is not dropped on a valid slot, place it to the first availiable space on the hand
                 if (hand.didDrawCard) {
                     // trigger alert 1
@@ -29,19 +29,19 @@ export default function Card(props) {
                     // trigger alert 2
                     return;
                 }
-                
+
                 const newHand = { ...hand };
                 for (let idx = 0; idx < newHand.cardSlots.length; idx++) {
                     if (newHand.cardSlots[idx] === 0) {
                         if (props.cardType === CardTypes.IN_MID_PILE) {
                             newHand.cardSlots[idx] = 200;
-                            newHand.didDrawCard= true;
-                            drawCardFromMid(socket,newHand);
+                            newHand.didDrawCard = true;
+                            drawCardFromMid(socket, newHand);
                         } else {
                             newHand.cardSlots[idx] = item.cardId;
                             newHand.leftPile.splice(-1, 1); // Remove the last card from the left pile
                             newHand.didDrawCard = true;
-                            emitDrawCardLeft(socket,newHand);
+                            emitDrawCardLeft(socket, newHand);
                         }
                         break;
                     }
@@ -52,7 +52,7 @@ export default function Card(props) {
                     // @TODO:
                     // trigger alert 1
                     return;
-                } 
+                }
 
                 const { slotIdx: targetSlotIdx } = dropResult;
                 const newHand = { ...hand };
@@ -60,7 +60,7 @@ export default function Card(props) {
 
                 // If the card is drawn from left or mid pile
                 if (props.cardType === CardTypes.IN_LEFT_PILE) {
-                    newHand.leftPile.splice(newHand.leftPile.length-1, 1); // Remove the last card from the left pile
+                    newHand.leftPile.splice(newHand.leftPile.length - 1, 1); // Remove the last card from the left pile
                     newHand.didDrawCard = true;
                     // edited : emitDrawCardLeft(socket,newHand);
                 } else if (props.cardType === CardTypes.IN_HAND || props.cardType === CardTypes.IN_MID_PILE) {
@@ -70,11 +70,11 @@ export default function Card(props) {
                         sourceSlotIdx = -1;
                     } else {
                         // If the card is moved from one slot to another
-                        sourceSlotIdx = newHand.cardSlots.findIndex(slot => slot === item.cardId); 
+                        sourceSlotIdx = newHand.cardSlots.findIndex(slot => slot === item.cardId);
                     }
-                    
+
                     // If the card is dropped to the discard pile
-                    if ( targetSlotIdx === `discard_pile_slot_idx`) {
+                    if (targetSlotIdx === `discard_pile_slot_idx`) {
 
                         if (sourceSlotIdx === -1) {
                             // trigger alert 0
@@ -89,19 +89,19 @@ export default function Card(props) {
                             // trigger alert 2
                             return;
                         }
-                        
+
                         // Remove the card from the source slot
                         newHand.cardSlots[sourceSlotIdx] = 0;
                         newHand.rightPile.push(cardId);
                         newHand.isTurn = false;
                         setHand(newHand);
-                        emitNextTurn(socket,newHand,item.cardId);
+                        emitNextTurn(socket, newHand, item.cardId);
                         return;
                     } else if (sourceSlotIdx !== -1) {
                         // Remove the card from the source slot
                         newHand.cardSlots[sourceSlotIdx] = 0;
                     }
-                    
+
                 }
 
                 // If the target slot is empty
@@ -109,11 +109,11 @@ export default function Card(props) {
                     newHand.cardSlots[targetSlotIdx] = cardId;
                     if (props.cardType === CardTypes.IN_MID_PILE) {
                         newHand.didDrawCard = true;
-                        drawCardFromMid(socket,newHand,targetSlotIdx);
+                        drawCardFromMid(socket, newHand, targetSlotIdx);
                         return;
-                    } else if ( props.cardType === CardTypes.IN_LEFT_PILE) {
+                    } else if (props.cardType === CardTypes.IN_LEFT_PILE) {
                         newHand.didDrawCard = true;
-                        emitDrawCardLeft(socket,newHand);
+                        emitDrawCardLeft(socket, newHand);
                         setHand(newHand);
                         return;
                     }
@@ -128,42 +128,42 @@ export default function Card(props) {
                     const rightBoundary = targetSlotIdx > 14 ? 30 : 15;
 
                     // Find the left weight
-                    for (leftIdx; leftIdx > leftBoundary ; leftIdx--) {
+                    for (leftIdx; leftIdx > leftBoundary; leftIdx--) {
                         if (newHand.cardSlots[leftIdx] === 0) {
                             break;
                         }
                     }
                     // Find the right weight
-                    for (rightIdx; rightIdx < rightBoundary; rightIdx++){
+                    for (rightIdx; rightIdx < rightBoundary; rightIdx++) {
                         if (newHand.cardSlots[rightIdx] === 0) {
                             break;
                         }
                     }
                     // Decide the direction
-                    if ( rightIdx === rightBoundary || leftIdx === leftBoundary) {
+                    if (rightIdx === rightBoundary || leftIdx === leftBoundary) {
                         // if one of the sides are out of boundary
                         if (rightIdx === rightBoundary && leftIdx !== leftBoundary) {
                             // shift to left 
                             newHand.cardSlots.splice(leftIdx, 1);
                             newHand.cardSlots.splice(targetSlotIdx, 0, cardId);
-                        } else if (rightIdx !== rightBoundary && leftIdx === leftBoundary){
+                        } else if (rightIdx !== rightBoundary && leftIdx === leftBoundary) {
                             // shift to right 
                             newHand.cardSlots.splice(rightIdx, 1);
                             newHand.cardSlots.splice(targetSlotIdx, 0, cardId);
                         } else {
                             // row is full, need to overflow to the right
-                            const tempLastCardId = rightIdx === 30 ? newHand.cardSlots[29] : newHand.cardSlots[14];  
-                            
+                            const tempLastCardId = rightIdx === 30 ? newHand.cardSlots[29] : newHand.cardSlots[14];
+
                             newHand.cardSlots.splice(rightIdx === 30 ? 29 : 14, 1);
                             newHand.cardSlots.splice(targetSlotIdx, 0, cardId);
-                            
+
                             rightIdx %= 30;
-                            while ( newHand.cardSlots[rightIdx] ) {
+                            while (newHand.cardSlots[rightIdx]) {
                                 rightIdx++;
                             }
                             newHand.cardSlots[rightIdx] = tempLastCardId;
                         }
-                        
+
                     } else if (rightIdx - targetSlotIdx <= targetSlotIdx - leftIdx) {
                         // Shift to right
                         newHand.cardSlots.splice(rightIdx, 1);
@@ -175,51 +175,51 @@ export default function Card(props) {
                         newHand.cardSlots.splice(targetSlotIdx, 0, cardId);
                     }
 
-                } 
+                }
                 // set the newHand
                 if (props.cardType === CardTypes.IN_MID_PILE) {
                     newHand.didDrawCard = true;
-                    drawCardFromMid(socket,newHand);
+                    drawCardFromMid(socket, newHand);
                 } else if (props.cardType === CardTypes.IN_LEFT_PILE) {
                     newHand.didDrawCard = true;
-                    emitDrawCardLeft(socket,newHand);
+                    emitDrawCardLeft(socket, newHand);
                 }
                 setHand(newHand);
-            
+
             }
         }
     }), [hand, setHand, props.cardId, props.cardType, props.undraggable]);
 
-    function emitNextTurn( socket,hand,cardId) {
-        socket.emit('next-turn-from-client',hand,cardId);
+    function emitNextTurn(socket, hand, cardId) {
+        socket.emit('next-turn-from-client', hand, cardId);
     }
 
-    function emitDrawCardLeft ( socket,newHand ) {
+    function emitDrawCardLeft(socket, newHand) {
         socket.emit('draw-card-left-from-client', newHand);
     }
-    
-    function drawCardFromMid (socket, newHand,targetSlotIdx) {
-        socket.emit('draw-card-mid-request',newHand,targetSlotIdx);
+
+    function drawCardFromMid(socket, newHand, targetSlotIdx) {
+        socket.emit('draw-card-mid-request', newHand, targetSlotIdx);
     }
 
-    const colorStrId = props.cardId % 53;
-    const colorStr = 
-        props.cardId === 200 ? 'back-turned' :  
-        colorStrId === 0 ? 'joker'  : 
-        colorStrId <= 13 ? 'gri'    :
-        colorStrId <= 26 ? 'mavi'   :
-        colorStrId <= 39 ? 'yesil'  : 'turuncu'
-    
-    
-    const cardImg = require(`../assets/cards/${colorStr}${colorStr === `back-turned` || colorStr === `joker` ?  `` : props.cardId % 13 === 0 ? 13 : props.cardId % 13}.png`);
+    const colorStrId = props.cardId % 52;
+    const colorStr =
+        props.cardId === 200 ? 'back-turned' :
+            colorStrId === 0 ? 'joker' :
+                colorStrId <= 13 ? 'gri' :
+                    colorStrId <= 26 ? 'mavi' :
+                        colorStrId <= 39 ? 'yesil' : 'turuncu'
 
-    const handleClick = 
-        props.cardType === CardTypes.IN_DISCARD ? () => alert(`You cannot pick a card from the discard pile! ${props.cardType}`) : 
-        !hand.isTurn ? (props.cardType === CardTypes.IN_HAND ? null : () => alert('It is not your turn!')) :
-        props.undraggable ? () =>alert('You can only draw one card per turn!') : null
-    
+
+    const cardImg = require(`../assets/cards/${colorStr}${colorStr === `back-turned` || colorStr === `joker` ? `` : props.cardId % 13 === 0 ? 13 : props.cardId % 13}.png`);
+
+    const handleClick =
+        props.cardType === CardTypes.IN_DISCARD ? () => alert(`You cannot pick a card from the discard pile! ${props.cardType}`) :
+            !hand.isTurn ? (props.cardType === CardTypes.IN_HAND ? null : () => alert('It is not your turn!')) :
+                props.undraggable ? () => alert('You can only draw one card per turn!') : null
+
     return (
-        <div className='game-card' 
+        <div className='game-card'
             ref={drag}
             style={{
                 opacity: isDragging ? 0 : 1,
