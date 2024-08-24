@@ -48,7 +48,6 @@ export default function Game() {
       }, 3000);
     });
 
-<<<<<<< HEAD
     // Round Initialiazation
     socket.on("game-status-start", () => {
       console.log("Game is starting");
@@ -104,116 +103,6 @@ export default function Game() {
       newHand.didDrawCard = true;
       setHand(newHand);
     });
-=======
-        socket.on('game-over', () => {
-            alert('Game is over! You`ll be redirected');
-            socket.disconnect();
-            setTimeout(() => {
-                navigate('/');
-            }, 3000);
-        })
-        
-        // Round Initialiazation
-        socket.on('game-status-start', () => {
-            console.log('Game is starting');
-        })
-        socket.on('dealing-cards', (cards, index) => {
-            const newHand = { ...hand };
-            const newCards = [...hand.cardSlots];
-            newCards.splice(0, cards.length, ...cards);
-            if (cards.length === 22) {
-                newHand.didDrawCard = true;
-            }
-            // console.log(`cards received : `);
-            // console.log(newCards);
-            newHand.playerIdx = index;
-            newHand.isTurn = !index;
-            newHand.cardSlots = newCards;
-            setHand(newHand);
-        })
-        
-        socket.on('next-turn-from-server', (whoseTurn, discard_piles) => {
-            const newHand = { ...hand };
-            newHand.whoseTurn = whoseTurn;
-            newHand.isTurn = whoseTurn === hand.playerIdx;
-            if (newHand.isTurn) {
-                newHand.didDrawCard = false;
-            }
-            newHand.rightPile = discard_piles[newHand.playerIdx]
-            newHand.oppRightPile = discard_piles[(newHand.playerIdx + 1) % 4]
-            newHand.leftPile = discard_piles[(newHand.playerIdx + 3) % 4]
-            newHand.oppLeftPile = discard_piles[(newHand.playerIdx + 2) % 4]
-            setHand(newHand);
-        })
-        
-        socket.on('next-turn-error', (err,cards,discardPile) => {
-            // @TODO:
-            // show up a toast notification
-            console.error(err);
-            const newHand = { ...hand };
-            newHand.cardSlots = cards;
-            newHand.rightPile = discardPile;
-            console.log(newHand.rightPile);
-            setHand(newHand);
-        })
-        
-        socket.on('draw-card-left-from-server', (discard_piles,pIdx) => {
-            // pIdx: player's index who drew the card
-            const newHand = { ...hand };
-            newHand.rightPile = discard_piles[newHand.playerIdx];
-            newHand.oppRightPile = discard_piles[(newHand.playerIdx + 1) % 4];
-            newHand.leftPile = discard_piles[(newHand.playerIdx + 3) % 4];
-            newHand.oppLeftPile = discard_piles[(newHand.playerIdx + 2) % 4];
-            
-            newHand.didDrawCard = true;
-            setHand(newHand);
-        })
-
-        socket.on('draw-card-left-error', (newCardsSlots,newLeftPile) => {
-            // @TODO:
-            // show up a toast notification
-            const newHand = { ...hand };
-            newHand.cardSlots = newCardsSlots;
-            newHand.didDrawCard = false;
-            newHand.leftPile = newLeftPile;
-            setHand(newHand);
-        })
-        
-        socket.on('draw-card-mid-response', newCardSlots => {
-            const newHand = { ...hand };
-            newHand.cardSlots = newCardSlots;
-            newHand.didDrawCard = true;
-            setHand(newHand);
-        })
-
-        socket.on('open-hand-response-to-all',tables => {
-            setTables(tables);
-        });
-        socket.on('open-hand-response-to-client',newCardSlots=>{
-            const newHand = {...hand};
-            newHand.cardSlots = newCardSlots;
-            newHand.hasOpened = true;
-            setHand(newHand);
-        })
-        
-        return (() => {
-            socket.off('err-game-full');
-            socket.off('game-over');
-            socket.off('game-status-start');
-            socket.off('dealing-cards');
-            socket.off('next-turn-from-server')
-            socket.off('draw-card-left-from-server');
-            socket.off('draw-card-mid-response');
-            socket.off('next-turn-error');
-            socket.off('draw-card-left-error');
-            socket.off('open-hand-response-to-all');
-            socket.off('open-hand-response-to-client');
-        })
-    }, [hand, navigate])
-    
-    return (
-        <div className="game-route-bg">
->>>>>>> 3ba273b48bff5cd4887a3393c5bbf8c1fbe5913e
 
     socket.on("draw-card-left-error", (newCardsSlots, newLeftPile) => {
       // @TODO:
