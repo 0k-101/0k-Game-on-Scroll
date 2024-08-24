@@ -111,7 +111,7 @@ class GameManager {
         for (let [idx,player] of this.players) {
             // okey cards value won't be added !!
             if (this.opened_hands[idx]) {
-                if (player.cards.length === 0) {
+                if (player.cards.length === 1) {
                     this.players.set(idx, {
                         ...player,
                         score: (this.players.get(idx).score - 101)
