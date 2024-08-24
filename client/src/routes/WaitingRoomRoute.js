@@ -153,6 +153,10 @@ export default function WaitingRoom({ account }) {
     window.location.href = "/";
   };
 
+  function handleClick() {
+
+    asdasd
+  }
 
   return (
     <div
@@ -187,7 +191,7 @@ export default function WaitingRoom({ account }) {
               <br />
               <strong style={{ color: 'yellow' }}>Good Luck!!..</strong>
             </h2>
-            <button type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>
+            <button onClick={handleClick} type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>
           </div>
         </Modal.Body>
       </Modal>
