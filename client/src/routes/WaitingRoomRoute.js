@@ -3,11 +3,12 @@ import socket from "../sockets/WaitingSocket.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 
-import { Modal } from 'react-bootstrap';
+import { Modal,Spinner } from 'react-bootstrap';
 
 export default function WaitingRoom( {account}) {
   const [playerCounter, setPlayerCounter] = useState(0);
   const [modalShow, setModalShow] = useState(false);
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -154,8 +155,7 @@ export default function WaitingRoom( {account}) {
   };
 
   function handleClick(){
-
-asdasd
+    setLoading(true);
   }
 
   return (
@@ -176,22 +176,29 @@ asdasd
             <Modal.Body >
                 <div className="round-over-container text-center">
                     <h2 className="round-over-content text-center mt-4">
-                      4 Players have matched together!
+                    <strong style={{color:'red'}}>4 Players Found !</strong>
                       <br/>
                       <br/>
                       Please Press the Button to Confirm Transaction!
                       <br/>
                       <br/>
-                      You'll be charged 0.001 Eth.
+                      You'll be charged <strong style={{color:'gold'}}>0.001 Eth</strong> !
                       <br/>
                       <br/>
-                      If you win, you'll earn <strong style={{color:'yellow'}}>triple</strong><br/>
+                      If you win, you'll earn <strong style={{color:'gold'}}>triple<small style={{fontSize:'1.5rem'}}> (x3)</small></strong><br/>
                       <small>If you finish the game as 2nd, you'll get your entry fee back</small>
                       <br/> 
                       <br/> 
-                      <strong style={{color:'yellow'}}>Good Luck!!..</strong>
+                      <strong style={{color:'gold'}}>Good Luck!!..</strong>
                       </h2>
-                    <button onClick={handleClick} type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>
+                      
+                    { !loading ? 
+                      <button onClick={handleClick} type="button" className="btn btn-outline-primary ready-btn" > Ready! </button>:
+                      <>
+                        <Spinner className="loader" animation="border" variant="warning" />
+                        <h2 className="loader-text"> Waiting for other players to complete their transactions</h2>
+                      </>
+                      }
                 </div>
             </Modal.Body>
         </Modal>
