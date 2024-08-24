@@ -238,7 +238,11 @@ function createGameSocket(gameRoomId) {
                             }
                             row++;
                         }
-
+                        
+                        gm.players.set(playerIdx, {
+                            ...gm.players.get(playerIdx),
+                            cards: cardSlots
+                        });
                         gameSocket.emit('open-hand-response-to-all',gm.tables);
                         socket.emit('open-hand-response-to-client',cardSlots);
                     })
