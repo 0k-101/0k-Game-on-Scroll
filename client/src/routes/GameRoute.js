@@ -150,10 +150,10 @@ export default function Game() {
             
             if (roundNum <= 4) {
                 setModalShow(true);
-                setClock(45);
+                let clk = 45;
                 setInterval(()=> {
-                    setClock(clock => clock - 1);
-                    if (clock === 0) {
+                    setClock(clk => clk - 1);
+                    if (clk === 0) {
                         setModalShow(false);
                     }
                 },1000)

@@ -141,9 +141,9 @@ class GameManager {
         this.#socket.emit('end-round',this.round, thisTurnScoreSheet);
         setTimeout(() => {
             if( this.round < 4) {
-                nextRound();
+                this.nextRound();
             } else {
-                endGame();
+               this.endGame();
             }
         }, 45000);
 
