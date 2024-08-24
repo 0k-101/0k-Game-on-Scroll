@@ -39,9 +39,16 @@
     padding-right: 1.25%;
     left:14%;
 }
+.game-table-container.table-bl::before {
+  content: "⚡ YOUR TABLE ⚡";
+  color: yellow;
+  text-shadow: 2px 2px 2px black;
+  position: absolute;
+  bottom: -15%;
+}
 .game-table-container.table-br {
   padding-left:1.7%;
-    right: 2%;
+  right: 2%;
 }
 
 /* IN GAME */

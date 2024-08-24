@@ -9,20 +9,19 @@ import TableCard from './TableCard'
 //import { HandContext } from '../routes/TestRoute';
 
 const bgImages = [];
-bgImages.push(require('../assets/game/overview-turn-0.png'))
-bgImages.push(require('../assets/game/overview-turn-1.png'))
-bgImages.push(require('../assets/game/overview-turn-2.png'))
-bgImages.push(require('../assets/game/overview-turn-3.png'))
+bgImages.push(await require('../assets/game/overview-turn-0.png'))
+bgImages.push(await require('../assets/game/overview-turn-1.png'))
+bgImages.push(await require('../assets/game/overview-turn-2.png'))
+bgImages.push(await require('../assets/game/overview-turn-3.png'))
 
 export default function OverviewPanel () {
     
     const { hand,setHand,socket, tables,setTables } = useContext(HandContext);
-
-    const [ bgImageIndex,setBgImageIndex ] = useState(0);
-
+    
+    const [ bgImageIndex,setBgImageIndex ] = useState();
     useEffect(() => {
         setBgImageIndex((hand.whoseTurn + (4- hand.playerIdx)) %4 );
-    },[hand.whoseTurn])
+    },[])
 
     return (
         <Container className='game-overview-container w-75 position-absolute'
