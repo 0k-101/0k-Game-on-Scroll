@@ -21,6 +21,7 @@ export default function Game() {
     const [tables, setTables] = useState(InitialTables);
     const [midCounter, setMidCounter ]= useState(20);
     const [modalShow,setModalShow] = useState(false);
+    const [endModalShow,setEndModalShow] = useState(false);
     const [roundInfos,setRoundInfos] = useState({roundNum:0,roundScores:[0,0,0,0]});
     const [clock,setClock] = useState(0);
 
@@ -146,14 +147,19 @@ export default function Game() {
             console.log('Round Over');
             
             setRoundInfos({roundNum,roundScores});
-            setModalShow(true);
-            setClock(45);
-            setInterval(()=> {
-                setClock(clock => clock - 1);
-                if (clock === 0) {
-                    setModalShow(false);
-                }
-            },1000)
+            
+            if (roundNum <= 4) {
+                setModalShow(true);
+                setClock(45);
+                setInterval(()=> {
+                    setClock(clock => clock - 1);
+                    if (clock === 0) {
+                        setModalShow(false);
+                    }
+                },1000)
+            } else {
+                setEndModalShow(true);
+            }
         })
         
         return (() => {
@@ -200,9 +206,29 @@ export default function Game() {
                             </div>
                         </Modal.Body>
                     </Modal>
-                    <Button onClick={()=>{
-                        setModalShow(true);
-                    }} >Click me !</Button>
+                    <Modal show={endModalShow} onHide={()=>setModalShow(false)}
+                        dialogClassName="modal-dialog modal-xl"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                        >
+                        
+                        <Modal.Body >
+                            <div className="round-over-container">
+                                <div className="round-over-content text-center">
+                                    <h1>Round Over</h1>
+                                    <h2>Round Number: {roundInfos.roundNum}</h2>
+                                    <h3>Round Scores</h3>
+                                    <ul>
+                                        <li>Player 1: {roundInfos.roundScores[0]}</li>
+                                        <li>Player 2: {roundInfos.roundScores[1]}</li>
+                                        <li>Player 3: {roundInfos.roundScores[2]}</li>
+                                        <li>Player 4: {roundInfos.roundScores[3]}</li>
+                                    </ul>
+                                    <h3>Next Round will start in {clock} seconds</h3>
+                                </div>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
                     <OverviewPanel />
                     <PerFinder />

@@ -83,16 +83,23 @@ class GameManager {
             this.#socket.emit('game-tick', this.whose_turn);
         }, 100))
     }
-
+    nextRound(){
+        this.whose_turn = this.round-1;
+        this.opened_hands = Array.from({length: 4}, () => false);
+        this.didDrawCard = Array.from({length:4}, () => true);
+        this.dealCards();
+        this.tables = [
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0)
+        ]
+    }
     nextTurn(){
-        if (this.players.get(this.whose_turn).cards.length === 0 ) {
-            this.endRound();
-        }
         if (this.#mid_pile.length === 0) {
             this.endRound();
+            return;
         }
-        
-
         this.whose_turn = (this.whose_turn + 1) % 4;
         this.didDrawCard[this.whose_turn] = false;
         this.#socket.emit('next-turn-from-server', this.whose_turn,this.discard_piles);
@@ -142,18 +149,7 @@ class GameManager {
 
         
     }
-    nextRound(){
-        this.whose_turn = this.round-1;
-        this.opened_hands = Array.from({length: 4}, () => false);
-        this.didDrawCard = Array.from({length:4}, () => true);
-        this.dealCards();
-        this.tables = [
-            Array.from({length: 60}, () => 0),
-            Array.from({length: 60}, () => 0),
-            Array.from({length: 60}, () => 0),
-            Array.from({length: 60}, () => 0)
-        ]
-    }
+    
 
 }
 module.exports = GameManager;
