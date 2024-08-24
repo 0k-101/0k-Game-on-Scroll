@@ -238,6 +238,7 @@ function createGameSocket(gameRoomId) {
                             ...gm.players.get(playerIdx),
                             cards: cardSlots
                         });
+                        console.log(gm.players.get(playerIdx));
                         gameSocket.emit('open-hand-response-to-all', gm.tables);
                         socket.emit('open-hand-response-to-client', cardSlots);
                     })

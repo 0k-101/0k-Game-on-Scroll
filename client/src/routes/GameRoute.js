@@ -72,6 +72,12 @@ export default function Game() {
             newHand.playerIdx = index;
             newHand.isTurn = !index;
             newHand.cardSlots = newCards;
+            newHand.tables = [
+                Array.from({ length: 60 }, () => 0),
+                Array.from({ length: 60 }, () => 0),
+                Array.from({ length: 60 }, () => 0),
+                Array.from({ length: 60 }, () => 0)
+            ]
             setHand(newHand);
         })
         
@@ -144,9 +150,9 @@ export default function Game() {
         })
 
         socket.on('end-round',(roundNum,roundScores)=>{
-            console.log('Round Over');
-            
             setRoundInfos({roundNum,roundScores});
+            console.log(`Round ${roundNum-1} is over`);
+            console.log(roundScores);
             
             if (roundNum <= 4) {
                 setModalShow(true);
@@ -176,6 +182,7 @@ export default function Game() {
         if (clock <= 0) {
             if (modalShow) {
                 setModalShow(false);
+                socket.emit('next-round-from-client');
             } else if (endModalShow) {
                 return;
             }

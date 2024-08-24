@@ -87,13 +87,13 @@ class GameManager {
         this.whose_turn = this.round-1;
         this.opened_hands = Array.from({length: 4}, () => false);
         this.didDrawCard = Array.from({length:4}, () => true);
-        this.dealCards();
         this.tables = [
             Array.from({length: 60}, () => 0),
             Array.from({length: 60}, () => 0),
             Array.from({length: 60}, () => 0),
             Array.from({length: 60}, () => 0)
         ]
+        this.dealCards();
     }
     nextTurn(){
         if (this.#mid_pile.length === 0) {
@@ -117,18 +117,19 @@ class GameManager {
                         score: (this.players.get(idx).score - 101)
                     })
                     thisTurnScoreSheet[idx] = -101;
-                    continue;
+                    
+                } else {
+                    let score = 0;
+                    for (let card of player.cards) {
+                        const cardScore = card % 13 === 0 ? 13 : card % 13;
+                        score += cardScore;
+                    }
+                    this.players.set(idx, {
+                        ...player,
+                        score: (this.players.get(idx).score + score)
+                    })
+                    thisTurnScoreSheet[idx] = score;
                 }
-                let score = 0;
-                for (let card of player.cards) {
-                    const cardScore = card % 13 === 0 ? 13 : card % 13;
-                    score += cardScore;
-                }
-                this.players.set(idx, {
-                    ...player,
-                    score: (this.players.get(idx).score + score)
-                })
-                thisTurnScoreSheet[idx] = score;
             } else {
                 this.players.set(idx, {
                     ...player,
@@ -145,7 +146,7 @@ class GameManager {
             } else {
                this.endGame();
             }
-        }, 45000);
+        }, 15000);
 
         
     }
