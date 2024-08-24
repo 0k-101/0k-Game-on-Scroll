@@ -77,7 +77,6 @@ export default function Game() {
             newHand.leftPile = discard_piles[(newHand.playerIdx + 3) % 4]
             newHand.oppLeftPile = discard_piles[(newHand.playerIdx + 2) % 4]
             setHand(newHand);
-            console.log('Client: Next Turn Processed!');
         })
         
         socket.on('next-turn-error', (err,cards,discardPile) => {
@@ -117,7 +116,16 @@ export default function Game() {
             newHand.cardSlots = newCardSlots;
             newHand.didDrawCard = true;
             setHand(newHand);
-            console.log('Client: Mid Draw Processed!');
+        })
+
+        socket.on('open-hand-response-to-all',tables => {
+            setTables(tables);
+        });
+        socket.on('open-hand-response-to-client',newCardSlots=>{
+            const newHand = {...hand};
+            newHand.cardSlots = newCardSlots;
+            newHand.hasOpened = true;
+            setHand(newHand);
         })
         
         return (() => {
@@ -130,6 +138,8 @@ export default function Game() {
             socket.off('draw-card-mid-response');
             socket.off('next-turn-error');
             socket.off('draw-card-left-error');
+            socket.off('open-hand-response-to-all');
+            socket.off('open-hand-response-to-client');
         })
     }, [hand, navigate])
     
@@ -140,7 +150,7 @@ export default function Game() {
                 <DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
                     <OverviewPanel />
-                    {/* <PerFinder /> */}
+                    <PerFinder />
                     <Board />
                 </DndProvider>
             </HandContext.Provider>

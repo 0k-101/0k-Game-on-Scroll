@@ -269,3 +269,63 @@
   }
   .label-top {
   }
+
+  /* pers and points */
+  .per-pts-text {
+    position: absolute;
+    bottom: 10%;
+    font-size: 1.3rem;
+    left: 2%;
+    color: #ffd600;
+    font-weight: 600;
+    color: #ffd600;
+    text-shadow: 2px 2px 3px black;
+  }
+  .per-pts-text::before{
+    content:"Per Points = ";
+    font-family: 'alagard'; 
+    font-weight: 600;
+    color: #ffd600;
+    text-shadow: 2px 2px 3px black;
+  }
+  .per-count-text {
+    position: absolute;
+    bottom: 15%;
+    font-size: 1.4rem;
+    left: 2%;
+    color: #1c2100;
+    font-weight: 600;
+    color: #ffd600;
+    text-shadow: 2px 2px 3px black;
+  }
+  
+  .per-count-text::before{
+    content:"Per Count = ";
+    font-family: 'alagard';
+    font-weight: 600;
+    color: #ffd600;
+    text-shadow: 2px 2px 4px black;
+  }
+
+  .per-openable-text.per-pts-text {
+    color:green;
+    text-shadow: 2px 2px 4px black;
+  }
+  .per-pts-text.per-openable-text::before {
+    color:green;
+    content: 'Openable < ';
+    text-shadow: 2px 2px 4px #665608;
+  }
+  .per-pts-text.per-openable-text::after {
+    color:green;
+    content: '>';
+  }
+
+  .open-hand-btn {
+    position: absolute;
+    font-family: 'alagard' !important; 
+    bottom: 5%;
+    left:2%;
+    width: 8%;
+    height: 5%;
+  }

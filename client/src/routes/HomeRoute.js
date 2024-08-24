@@ -13,7 +13,7 @@ export default function Home() {
     cards.push(require('../assets/cards/gri1.png'))
     cards.push(require('../assets/cards/turuncu12.png'))
     cards.push(require('../assets/cards/mavi6.png'))
-    cards.push(require('../assets/cards/pembe4.png'))
+    cards.push(require('../assets/cards/yesil4.png'))
     const diskImg = require('../assets/menu/disk.png')
     const zeroKLogo = require('../assets/menu/0k-logo.png')
 

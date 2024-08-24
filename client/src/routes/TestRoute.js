@@ -9,7 +9,7 @@ import {InitialHand,InitialTables} from "../constants/Initials";
 import OverviewPanel from '../components/OverviewPanel';
 
 
-export const HandContext = createContext();
+export const TestContext = createContext();
 
 export default function Test(){
 
@@ -17,13 +17,13 @@ export default function Test(){
     const [tables,setTables] = useState(InitialTables);  
 
     return (
-        <HandContext.Provider value={{hand}}>
+        <TestContext.Provider value={{hand}}>
             <DndProvider backend={HTML5Backend}>
                     <PlayerLabels currentPlayerId={hand.playerIdx} whoseTurn={hand.whoseTurn} />
                     <OverviewPanel />
-                    {/* <PerFinder /> */}
+                    <PerFinder />
                     <Board />
             </DndProvider>
-        </HandContext.Provider>
+        </TestContext.Provider>
     )
 }

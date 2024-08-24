@@ -13,25 +13,10 @@ export const InitialHand = {
 }
 
 const InitialTables = [
-    Array.from({length: 50}, () => 0),
-    Array.from({length: 50}, () => 0),
-    Array.from({length: 50}, () => 0),
-    Array.from({length: 50}, () => 0)
+    Array.from({length: 60}, () => 0),
+    Array.from({length: 60}, () => 0),
+    Array.from({length: 60}, () => 0),
+    Array.from({length: 60}, () => 0)
 ];
-
-InitialTables[2][5] = 70;
-InitialTables[2][6] = 71;
-InitialTables[2][7] = 72;
-InitialTables[2][14] = 53;
-InitialTables[2][15] = 105;
-InitialTables[2][16] = 105;
-InitialTables[2][17] = 105;
-InitialTables[2][18] = 105;
-InitialTables[2][19] = 105;
-InitialTables[2][20] = 105;
-InitialTables[2][21] = 105;
-InitialTables[2][22] = 105;
-
-
 
 export { InitialTables };

@@ -5,6 +5,9 @@ import { HandContext } from '../routes/GameRoute'
 import TableCard from './TableCard'
 
 
+//wil bee deleted
+//import { HandContext } from '../routes/TestRoute';
+
 const bgImages = [];
 bgImages.push(require('../assets/game/overview-turn-0.png'))
 bgImages.push(require('../assets/game/overview-turn-1.png'))
@@ -18,7 +21,7 @@ export default function OverviewPanel () {
     const [ bgImageIndex,setBgImageIndex ] = useState(0);
 
     useEffect(() => {
-        setBgImageIndex((hand.whoseTurn +4+ hand.playerIdx) %4 );
+        setBgImageIndex((hand.whoseTurn + (4- hand.playerIdx)) %4 );
     },[hand.whoseTurn])
 
     return (

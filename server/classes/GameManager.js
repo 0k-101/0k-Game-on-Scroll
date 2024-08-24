@@ -20,10 +20,10 @@ class GameManager {
         ];
 
         this.tables = [
-            Array.from({length: 50}, () => 0),
-            Array.from({length: 50}, () => 0),
-            Array.from({length: 50}, () => 0),
-            Array.from({length: 50}, () => 0)
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0),
+            Array.from({length: 60}, () => 0)
         ]
         
         this.players = new Map();

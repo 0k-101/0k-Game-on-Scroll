@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import CardTypes from '../constants/CardTypes';
 
 // will be deleted
-// import { HandContext } from '../routes/TestRoute';
+//import { HandContext } from '../routes/TestRoute';
 
 export default function Card(props) {
     const { hand, setHand, socket } = useContext(HandContext);
@@ -200,17 +200,14 @@ export default function Card(props) {
         colorStrId === 0 ? 'joker'  : 
         colorStrId <= 13 ? 'gri'    :
         colorStrId <= 26 ? 'mavi'   :
-        colorStrId <= 39 ? 'pembe'  : 'turuncu'
+        colorStrId <= 39 ? 'yesil'  : 'turuncu'
     
     
     const cardImg = require(`../assets/cards/${colorStr}${colorStr === `back-turned` || colorStr === `joker` ?  `` : props.cardId % 13 === 0 ? 13 : props.cardId % 13}.png`);
 
-    const flipCard = () => {
-    }
-
     const handleClick = 
         props.cardType === CardTypes.IN_DISCARD ? () => alert(`You cannot pick a card from the discard pile! ${props.cardType}`) : 
-        !hand.isTurn ? (props.cardType === CardTypes.IN_HAND ? flipCard() : () => alert('It is not your turn!')) :
+        !hand.isTurn ? (props.cardType === CardTypes.IN_HAND ? null : () => alert('It is not your turn!')) :
         props.undraggable ? () =>alert('You can only draw one card per turn!') : null
     
     return (

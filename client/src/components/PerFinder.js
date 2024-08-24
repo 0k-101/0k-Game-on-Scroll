@@ -1,8 +1,11 @@
 import { Button } from 'react-bootstrap'
 import Per from '../constants/Per'
-import { useState,useContext } from 'react'
+import { useState,useContext, useEffect } from 'react'
 import { HandContext } from '../routes/GameRoute'
-// sahte okey ile renkli per 
+
+// will be deleted
+// import { HandContext } from '../routes/TestRoute';
+
 
 class Card {
     constructor(cardId, isFakeOkey) {
@@ -223,22 +226,33 @@ const perFinder = (hand, okeyId) => {
     })
     pers.forEach(per => {
         points += per.perTotalValue
-        console.log('Per ', per)
     }
     )
     return ({ pers, points })
 }
 export default function PerFinder() {
     const [ perResult,setPerResult ] = useState( { pers:null,points:0 } )
-    const { hand } = useContext(HandContext);
-    function handleClick() {
-        setPerResult( perFinder([...hand.cardSlots]));
-    }    
+    const { hand,_,socket } = useContext(HandContext);
+    useEffect (()=>{
+        setPerResult(perFinder([...hand.cardSlots]));
+    },[hand])
+
+    function handleOpenHand(){
+        console.log('open hand request');  
+        if (hand.isTurn && perResult.points >= 101) {
+            socket.emit('open-hand-request-from-client',perResult,hand.cardSlots);
+        } else {
+            // throw alert
+            console.error('You cannot open your hand with these pers!');
+        }
+    }
+
     return (
         <>
-            <h2 style={{ position: 'absolute', left: '20%' }}>Per Finder {perResult.pers?.length} , pts: { perResult.points } </h2>
-            <Button className='btn btn-danger open-hand-btn' disabled={perResult.points < 101 || !hand.isTurn} >Open Hand</Button>
-            <Button className='btn btn-danger calculate-per-btn' onClick={handleClick}>Calculate Pers</Button>
+            <h5 className={perResult.points >= 101 ? `per-count-text per-openable-text` : `per-count-text`}>{perResult.pers?.length}</h5> 
+                <br/>
+            <h5 className={perResult.points >= 101 ? `per-pts-text per-openable-text` : `per-pts-text`} >{ perResult.points } </h5>
+            <button className={`btn btn-outline-${perResult.points>= 101 ? `success`:`danger`} open-hand-btn`} disabled={perResult.points < 101 || !hand.isTurn} onClick={handleOpenHand}>Open Hand</button>
         </>
     );
 }

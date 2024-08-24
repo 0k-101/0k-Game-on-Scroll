@@ -113,8 +113,6 @@ function createGameSocket(gameRoomId) {
                             ...player,
                             cards: handFromClient.cardSlots
                         })
-                        console.log(`new hand : `);
-                        console.log(gm.players.get(playerIdx).cards);
                         gm.discard_piles[(handFromClient.playerIdx+3) % 4].pop()
                         gm.didDrawCard[playerIdx] = true;
                         gameSocket.emit('draw-card-left-from-server',gm.discard_piles,playerIdx); 
@@ -156,6 +154,93 @@ function createGameSocket(gameRoomId) {
 
                     }) 
 
+                    socket.on('open-hand-request-from-client', (perResults,cardSlots) => {
+                        // check if it's turn
+                        // find players id on the server
+                        let playerIdx = -1;
+                        try {
+                            for ( let [idx,player] of gm.players) {
+                                if (player.player_id === socket.id) {
+                                    playerIdx = idx;
+                                    break;
+                                }
+                            }
+                            if (playerIdx === -1) {
+                                throw new Error('Player Index could not found!');
+                            }
+                            if (perResults.points < 101) {
+                                throw new Error('You cannot open your hand with these pers!');
+                            }
+                            let totalLen=0;
+                            for (let per of perResults.pers) {
+                                totalLen += per.perCardIds.length;
+                            }
+                            if (totalLen > 21) {
+                                throw new Error('You have to leave at least 1 card in your hand!');
+                            }
+
+
+                        } catch (e) {
+                            console.log(e, ` Socket id: ${socket.id}`);
+                            return;
+                        }
+                        
+                        // @TODO:
+                        // Check if he has the cards
+                        
+                        
+                        
+                        for (let per of perResults.pers) {
+                            for (let card of per.perCardIds){
+                                const cardSlotIdx = cardSlots.indexOf(card); 
+                                if (cardSlotIdx === -1) {
+                                    console.log('Card not found in hand!');
+                                    return;
+                                } else {
+                                    cardSlots[cardSlotIdx] = 0;
+                                }
+                            }
+                        }
+
+                        gm.opened_hands[playerIdx] = true;
+                        // table update
+                        let row = 0;
+                        let temp_for_6th_7th_pers = [];
+                        if (perResults.pers.length > 5) {
+                            for (let i=0; i<perResults.pers.length; i++) {
+                                if(perResults.pers[i].perCardIds.length === 3) {
+                                    temp_for_6th_7th_pers.push(i);
+                                }
+                            }
+                        }
+                        for (let per of perResults.pers) {
+                            if (row >= 5) {
+                                const rowIdx = temp_for_6th_7th_pers[row-5]
+                                gm.tables[playerIdx][(12*rowIdx)+ 1] = gm.tables[playerIdx][(12*rowIdx)+ 5];
+                                gm.tables[playerIdx][(12*rowIdx)+ 2] = gm.tables[playerIdx][(12*rowIdx)+ 6];
+                                gm.tables[playerIdx][(12*rowIdx)+ 3] = gm.tables[playerIdx][(12*rowIdx)+ 7];
+                                
+                                gm.tables[playerIdx][(12*rowIdx)+ 5] = 0;
+                                gm.tables[playerIdx][(12*rowIdx)+ 6] = 0;
+                                gm.tables[playerIdx][(12*rowIdx)+ 7] = 0;
+                                
+                                const startIdx = 6;
+                                for (let i=0; i<per.perCardIds.length; i++) {
+                                    gm.tables[playerIdx][(12*rowIdx)+ startIdx + i] = per.perCardIds[i];
+                                }
+                            } else {
+                                const startIdx = 6 - Math.floor(per.perCardIds.length / 2);
+                                for (let i=0; i<per.perCardIds.length; i++) {
+                                    gm.tables[playerIdx][(12*row)+ startIdx + i] = per.perCardIds[i];
+                                }
+                            }
+                            row++;
+                        }
+
+                        gameSocket.emit('open-hand-response-to-all',gm.tables);
+                        socket.emit('open-hand-response-to-client',cardSlots);
+                    })
+
                     
                     socket.on('next-turn-from-client', ( handFromClient,discardedCardId ) => {
                         // check if it's turn
@@ -174,7 +259,7 @@ function createGameSocket(gameRoomId) {
                         } catch (e) {
                             console.log(e, ` Socket id: ${socket.id}`);
                             return;
-                        }
+                        }   
                         
                         try {
                             gm.whose_turn === playerIdx ? null :  new Error('Not your turn');
@@ -203,7 +288,6 @@ function createGameSocket(gameRoomId) {
                             cards: handFromClient.cardSlots
                         });
                         gameSocket.emit('next-turn-from-server',gm.whose_turn,gm.discard_piles);
-                        console.log(`Server-side: next-turn completed!`);
                     })
 
                     

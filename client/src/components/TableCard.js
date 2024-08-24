@@ -6,7 +6,7 @@ export default function TableCard ( {cardId} ) {
         colorStrId === 0 ? 'joker'  : 
         colorStrId <= 13 ? 'gri'    :
         colorStrId <= 26 ? 'mavi'   :
-        colorStrId <= 39 ? 'pembe'  : 'turuncu'
+        colorStrId <= 39 ? 'yesil'  : 'turuncu'
     
     
     const cardImg = require(`../assets/cards/${colorStr}${colorStr === `back-turned` || colorStr === `joker` ?  `` : cardId % 13 === 0 ? 13 : cardId % 13}.png`);
