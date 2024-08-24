@@ -14,39 +14,40 @@ export default function WaitingRoom({ account }) {
   useEffect(() => {
     socket.connect();
     socket.on("connect", async () => {
-      if (!account) {
-        window.alert("Please install/login MetaMask to play the game");
-        navigate("/");
-      }
-      console.log("connected to server");
+      // if (!account) {
+      //   window.alert("Please install/login MetaMask to play the game");
+      //   navigate("/");
+      // }
+      // console.log("connected to server");
 
-      const wallet = window.ethereum;
-      if (wallet) {
-        const provider = new ethers.BrowserProvider(wallet);
-        await provider.send('eth_requestAccounts', []);
-        const signer = provider.getSigner();
-        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-        const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
-        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-        window.alert("You have connected to the server, now sign the transaction to join the game lobby");
-        try {
-          const tx = await contract.connect(signer).joinGame();
-          await tx.wait();
-          window.alert("You have joined the game lobby, now wait for the other players to join");
-        }
-        catch (e) {
-          console.error(e);
-          window.alert("Failed to join the game");
-          window.location.href = "/";
-        }
-      }
+      // const wallet = window.ethereum;
+      // if (wallet) {
+      //   const provider = new ethers.BrowserProvider(wallet);
+      //   await provider.send('eth_requestAccounts', []);
+      //   const signer = provider.getSigner();
+      //   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+      //   const contractAbi = process.env.REACT_APP_CONTRACT_ABI;
+      //   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+      //   window.alert("You have connected to the server, now sign the transaction to join the game lobby");
+      //   try {
+      //     const tx = await contract.connect(signer).joinGame();
+      //     await tx.wait();
+      //     window.alert("You have joined the game lobby, now wait for the other players to join");
+      //   }
+      //   catch (e) {
+      //     console.error(e);
+      //     window.alert("Failed to join the game");
+      //     window.location.href = "/";
+      //   }
+      // }
 
     });
     socket.on("player-counter", (counter) => {
       setPlayerCounter(counter);
     });
     socket.on("game-start", (gameRoomId) => {
-      setModalShow(true);
+      // setModalShow(true);
+      // navigate(`/game/${gameRoomId}`)
     });
 
     // socket.on('await-transaction', async () => {
