@@ -1,7 +1,21 @@
+const Images = [
+  require('../assets/tutorial/1.png'),
+  require('../assets/tutorial/2.png'),
+  require('../assets/tutorial/3.png'),
+  require('../assets/tutorial/4.png'),
+  require('../assets/tutorial/5.png'),
+  require('../assets/tutorial/6.png'),
+  require('../assets/tutorial/7.png'),
+  require('../assets/tutorial/8.jpg'),
+  require('../assets/tutorial/9.png'),
+]
+
 const TutorialPage = () => {
   return (
-    <div className="tutorial-page-container p-5">
-      <h1 className="text-center">0K Game Tutorial</h1>
+    <>
+    <div className='tutorial-page-bg'></div>
+    <div className="tutorial-page-container p-5 text-baseline">
+        <h1 className="text-center">0K Game Tutorial</h1>
 
       <section className="mt-4">
         <h2>Game Rules</h2>
@@ -26,6 +40,7 @@ const TutorialPage = () => {
 
         <h3>Gameplay</h3>
         <h4>Drawing and Discarding</h4>
+
         <p>
           On your turn, you may either draw a tile from the draw pile or take
           the tile that the player before you just discarded. After drawing, if
@@ -33,6 +48,7 @@ const TutorialPage = () => {
           them down. This is called opening your hand. Otherwise, you must
           discard a tile to end your turn.
         </p>
+        <img src={Images[0]} alt="Per Calculation Example" className="img-fluid" style={{width:'50%'}}/>
 
         <h4>Pers</h4>
         <p>
@@ -45,10 +61,14 @@ const TutorialPage = () => {
             <strong>Sets:</strong> Three or more tiles of the same number in
             different colors (e.g., a green 8, an orange 8, and a blue 8).
           </li>
+        <img src={Images[1]} alt="Joker Example" className="img-fluid" />
+
           <li>
             <strong>Runs:</strong> Three or more consecutive numbers of the same
             color (e.g., an orange 4, 5, 6, 7, 8).
           </li>
+        <img src={Images[2]} alt="Fake Joker Example" className="img-fluid" />
+
         </ul>
 
         <h4>Calculating Your Current Points and Opening Your Hand</h4>
@@ -58,16 +78,20 @@ const TutorialPage = () => {
           tiles is added up. For example: 8 + 8 + 8 = 15. 15 is the total points
           of this per.
         </p>
-        <img src="img1.png" alt="Per Calculation Example" className="img-fluid" />
+        <img src={Images[3]} alt="Fake Joker Example" className="img-fluid" />
 
         <h4>Joker (Okey Tile)</h4>
         <p>
           Jokers can be used to substitute any tile in a set or run. It is the
-          tile that is +1 of the tile in Okey area. For example, in this game,
+          tile that is +1 of the tile in Okey area. 
+          </p> 
+        <img src={Images[4]} alt="Fake Joker Example" className="img-fluid" />
+          
+          <p>For example, in this game,
           the joker is gray 4. Down below is a per that is created with the
           joker tile blue 12.
         </p>
-        <img src="img2.png" alt="Joker Example" className="img-fluid" />
+        <img src={Images[5]} alt="Fake Joker Example" className="img-fluid" />
 
         <h4>Fake Joker</h4>
         <p>
@@ -75,10 +99,11 @@ const TutorialPage = () => {
           the joker is 12 blue, you can use the fake joker as blue 12, and the
           below per would be valid.
         </p>
-        <img src="img3.png" alt="Fake Joker Example" className="img-fluid" />
       </section>
 
+      <img src={Images[6]} alt="Fake Joker Example" className="img-fluid" />
       <section className="mt-4">
+
         <h2>Opening Your Hand</h2>
         <p>
           Your total points equal the total points of all pers. If your points
@@ -94,7 +119,9 @@ const TutorialPage = () => {
         </p>
       </section>
 
+      <img src={Images[7]} alt="Fake Joker Example" className="img-fluid" style={{width:'50%'}}/>
       <section className="mt-4">
+
         <h2>Completing</h2>
         <p>
           Completing means a player has no tiles left to play with. This is
@@ -116,6 +143,7 @@ const TutorialPage = () => {
         </p>
         <p>The main goal is to have the least score at the end of 4 rounds.</p>
       </section>
+      <img src={Images[8]} alt="Fake Joker Example" className="img-fluid" style={{width:'50%'}} />
 
       <section className="mt-4">
         <h2>Tips and Strategies</h2>
@@ -138,6 +166,7 @@ const TutorialPage = () => {
         </ul>
       </section>
     </div>
+    </>
   );
 };
 

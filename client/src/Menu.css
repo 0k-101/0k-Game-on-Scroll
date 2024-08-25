@@ -3,7 +3,8 @@
     src: url('./assets/fonts/alagard.ttf') format('truetype');
 }
 .main-menu-container ,
-.waiting-menu-container {
+.waiting-menu-container,
+.tutorial-page-container {
     height: 100vh;
     background: url('./assets/menu/main_menu_bg2.gif') no-repeat fixed center;
     background-size:cover;
@@ -22,6 +23,28 @@
     height: 100vh;
     background-size: cover;
     overflow-y: scroll !important;
+    color: whitesmoke;
+    background-color: #ffab0f;
+    font-family: 'alagard';
+}
+.tutorial-page-container h1 ,
+.tutorial-page-container h2 ,
+.tutorial-page-container h3 ,
+.tutorial-page-container h4 ,
+.tutorial-page-container h5 {
+    color: gold;
+}
+
+.tutorial-page-container::before {
+    content:"";
+    position: absolute;
+    width: 95%;
+    left: 2%;
+    height: max-content;
+    background-color: azure;
+    opacity: .15;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
 }
 
 /* .game-route-bg::before {
