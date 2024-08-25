@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes } from 'react-router-dom';
 import { createContext,useState } from 'react'
 import Test from './routes/TestRoute';
+import TutorialPage from './routes/TutorialRoute';
 
 export const AccountContext = createContext();
 
@@ -25,6 +26,7 @@ function App() {
 				<Route path="/waiting-room" element={<WaitingRoom account={account} />} />
 				<Route path='*' element={<NotFound />} />
 				<Route path='/test' element={<Test />} />
+				<Route path='/tutorial' element={<TutorialPage />} />
 			</Routes>
 		</AccountContext.Provider>
 	);
