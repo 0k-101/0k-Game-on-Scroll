@@ -202,7 +202,7 @@ export default function Card(props) {
         socket.emit('draw-card-mid-request', newHand, targetSlotIdx);
     }
 
-    const colorStrId = props.cardId % 52;
+    const colorStrId = props.cardId % 53;
     const colorStr =
         props.cardId === 200 ? 'back-turned' :
             colorStrId === 0 ? 'joker' :
@@ -219,7 +219,7 @@ export default function Card(props) {
                 props.undraggable ? () => alert('You can only draw one card per turn!') : null
 
     return (
-        <div className={props.cardType === CardTypes.OKEY_CARD  ? 'game-card okey-card' : 'game-card'}
+        <div className={props.cardType === CardTypes.OKEY_CARD ? 'game-card okey-card' : 'game-card'}
             ref={drag}
             style={{
                 opacity: isDragging ? 0 : 1,
